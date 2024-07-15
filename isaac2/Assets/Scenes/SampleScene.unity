@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 893021816}
   - component: {fileID: 893021815}
   - component: {fileID: 893021814}
+  - component: {fileID: 893021818}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -342,6 +343,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &893021818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893021813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b54226edfa91f746a7b9488c9f472a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 3986546034732378727, guid: c29f07cb9903142419096573349580e0, type: 3}
+  shootCD: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
