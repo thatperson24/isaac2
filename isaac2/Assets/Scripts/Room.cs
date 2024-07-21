@@ -26,7 +26,7 @@ public class Room : MonoBehaviour
     void Awake()
     {
         this.gameObject.name = this.gameObject.transform.position.x + " - " + this.gameObject.transform.position.y;
-        if (WallCheck(false))
+        if (WallCheck())
         {
             if (topDoorCheck != null && Physics2D.OverlapCircle(topDoorCheck.position, .25f, doorLayer) != null)
             {
@@ -119,51 +119,30 @@ public class Room : MonoBehaviour
         return numOpenings;
     }
 
-    public bool WallCheck(bool closing)
+    public bool WallCheck()
     {
-        if (!closing)
+        
+        if ((topWallCheck != null && Physics2D.OverlapCircle(topWallCheck.position, .25f, doorLayer) != null) ||
+            (bottomWallCheck != null && Physics2D.OverlapCircle(bottomWallCheck.position, .25f, doorLayer) != null) ||
+            (leftWallCheck != null && Physics2D.OverlapCircle(leftWallCheck.position, .25f, doorLayer) != null) ||
+            (rightWallCheck != null && Physics2D.OverlapCircle(rightWallCheck.position, .25f, doorLayer) != null))
+        {            
+            Destroy(this.gameObject);
+            return false;
+        }
+        if ((topDoorCheck != null && Physics2D.OverlapCircle(topDoorCheck.position, .25f, wallLayer) != null) ||
+            (bottomDoorCheck != null && Physics2D.OverlapCircle(bottomDoorCheck.position, .25f, wallLayer) != null) ||
+            (leftDoorCheck != null && Physics2D.OverlapCircle(leftDoorCheck.position, .25f, wallLayer) != null) ||
+            (rightDoorCheck != null && Physics2D.OverlapCircle(rightDoorCheck.position, .25f, wallLayer) != null))
         {
-            if ((topWallCheck != null && Physics2D.OverlapCircle(topWallCheck.position, .25f, doorLayer) != null) ||
-                (bottomWallCheck != null && Physics2D.OverlapCircle(bottomWallCheck.position, .25f, doorLayer) != null) ||
-                (leftWallCheck != null && Physics2D.OverlapCircle(leftWallCheck.position, .25f, doorLayer) != null) ||
-                (rightWallCheck != null && Physics2D.OverlapCircle(rightWallCheck.position, .25f, doorLayer) != null))
-            {            
-                Destroy(this.gameObject);
-                return false;
-            }
-            if ((topDoorCheck != null && Physics2D.OverlapCircle(topDoorCheck.position, .25f, wallLayer) != null) ||
-                (bottomDoorCheck != null && Physics2D.OverlapCircle(bottomDoorCheck.position, .25f, wallLayer) != null) ||
-                (leftDoorCheck != null && Physics2D.OverlapCircle(leftDoorCheck.position, .25f, wallLayer) != null) ||
-                (rightDoorCheck != null && Physics2D.OverlapCircle(rightDoorCheck.position, .25f, wallLayer) != null))
-            {
-                Destroy(this.gameObject);
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            Destroy(this.gameObject);
+            return false;
         }
         else
         {
-            if (topDoorCheck != null && Physics2D.OverlapCircle(topDoorCheck.position, .25f, doorLayer) != null)
-            {
-                Physics2D.OverlapCircle(topDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.SetActive(false);
-            }
-            if (bottomDoorCheck != null && Physics2D.OverlapCircle(bottomDoorCheck.position, .25f, doorLayer) != null)
-            {
-                Physics2D.OverlapCircle(bottomDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.SetActive(false);               
-            }
-            if (leftDoorCheck != null && Physics2D.OverlapCircle(leftDoorCheck.position, .25f, doorLayer) != null)
-            {
-                Physics2D.OverlapCircle(leftDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.SetActive(false);                
-            }
-            if (rightDoorCheck != null && Physics2D.OverlapCircle(rightDoorCheck.position, .25f, doorLayer) != null)
-            {
-                Physics2D.OverlapCircle(rightDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.SetActive(false);                
-            }
-            return false;
+            return true;
         }
+        
     }
 
     public void CloseRooms()

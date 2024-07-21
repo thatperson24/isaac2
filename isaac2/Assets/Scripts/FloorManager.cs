@@ -47,7 +47,7 @@ public class FloorManager : MonoBehaviour
             int roomsAdded = 0;
             for (int i = 0; i < currentNumRooms; i++)
             {
-                roomsAdded += SpawnRoom(rooms[i], false);                
+                roomsAdded += SpawnRoom(rooms[i]);                
             }
             currentNumRooms += roomsAdded;    
             if(GetOpeningsCount() == 0)
@@ -67,13 +67,13 @@ public class FloorManager : MonoBehaviour
         
     }
 
-    private int SpawnRoom(GameObject BaseRoom, bool destroyRoom)
+    private int SpawnRoom(GameObject BaseRoom)
     {
         int roomsAdded = 0;
         if (BaseRoom.GetComponent<Room>().GetTopRoom() == null)
         {
             GameObject newTopRoom = Instantiate(topConPieces[Random.Range(0, topConPieces.Count)], new Vector3(BaseRoom.transform.position.x, BaseRoom.transform.position.y + yScale, transform.position.z), transform.rotation);
-            bool spawned = newTopRoom.GetComponent<Room>().WallCheck(destroyRoom);
+            bool spawned = newTopRoom.GetComponent<Room>().WallCheck();
             if (spawned)
             {
                 rooms.Add(newTopRoom);
@@ -83,7 +83,7 @@ public class FloorManager : MonoBehaviour
         if (BaseRoom.GetComponent<Room>().GetBottomRoom() == null)
         {
             GameObject newBottomRoom = Instantiate(bottomConPieces[Random.Range(0, bottomConPieces.Count)], new Vector3(BaseRoom.transform.position.x, BaseRoom.transform.position.y - yScale, transform.position.z), transform.rotation);
-            bool spawned = newBottomRoom.GetComponent<Room>().WallCheck(destroyRoom);
+            bool spawned = newBottomRoom.GetComponent<Room>().WallCheck();
             if (spawned) {
                 rooms.Add(newBottomRoom);
                 roomsAdded++;
@@ -92,7 +92,7 @@ public class FloorManager : MonoBehaviour
         if (BaseRoom.GetComponent<Room>().GetLeftRoom() == null)
         {
             GameObject newLeftRoom = Instantiate(leftConPieces[Random.Range(0, leftConPieces.Count)], new Vector3(BaseRoom.transform.position.x - xScale, BaseRoom.transform.position.y, transform.position.z), transform.rotation);
-            bool spawned = newLeftRoom.GetComponent<Room>().WallCheck(destroyRoom);
+            bool spawned = newLeftRoom.GetComponent<Room>().WallCheck();
             if (spawned)
             {
                 rooms.Add(newLeftRoom);
@@ -102,7 +102,7 @@ public class FloorManager : MonoBehaviour
         if (BaseRoom.GetComponent<Room>().GetRightRoom() == null)
         {
             GameObject newRightRoom = Instantiate(rightConPieces[Random.Range(0, rightConPieces.Count)], new Vector3(BaseRoom.transform.position.x + xScale, BaseRoom.transform.position.y, transform.position.z), transform.rotation);
-            bool spawned = newRightRoom.GetComponent<Room>().WallCheck(destroyRoom);
+            bool spawned = newRightRoom.GetComponent<Room>().WallCheck();
             if (spawned)
             {
                 rooms.Add(newRightRoom);
