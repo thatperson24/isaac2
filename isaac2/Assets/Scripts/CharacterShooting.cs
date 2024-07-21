@@ -23,42 +23,22 @@ public class CharacterShooting : MonoBehaviour
     {
 
         RotateGun();
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            GameObject newBullet = Instantiate(bulletPrefab, gunPivot.position, gunPivot.rotation);
-            newBullet.transform.Rotate(0, 0, 0);
-            float bulletSpeed = 5f; //Set using getters
-            newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(bulletSpeed * newBullet.transform.right.x, bulletSpeed * newBullet.transform.right.y);
-
-        }
         if (canShoot)
         {
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.Mouse0))
             {
-                StartCoroutine(shoot(0, 1));
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                StartCoroutine(shoot(0, -1));
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                StartCoroutine(shoot(1, 0));
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                StartCoroutine(shoot(-1, 0));
+                StartCoroutine(shoot());
             }
         }
     }
 
-    IEnumerator shoot(float xModifier, float yModifier)
+    IEnumerator shoot()
     {
-        GameObject newBullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        GameObject newBullet = Instantiate(bulletPrefab, gunPivot.position, gunPivot.rotation);
         //Rotate later depending on sprite
         newBullet.transform.Rotate(0, 0, 0);
-        float bulletSpeed = 5f; //Set using getters
-        newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(bulletSpeed * xModifier, bulletSpeed * yModifier);
+        float bulletSpeed = newBullet.GetComponent<Bullet>().GetBulletSpeed();
+        newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(bulletSpeed * newBullet.transform.right.x, bulletSpeed * newBullet.transform.right.y);
         canShoot = false;
         yield return new WaitForSeconds(shootCD);
         canShoot = true;

@@ -55,11 +55,11 @@ public class FloorManager : MonoBehaviour
                 for (int i = 0;i < 2; i++)
                 {
                     rooms.RemoveAt(rooms.Count - 1);
+                    currentNumRooms --;
                 }
             }
         }
 
-        Debug.Log("");
         for (int i = 0; i < currentNumRooms; i++)
         {        
             rooms[i].GetComponent<Room>().CloseRooms();
