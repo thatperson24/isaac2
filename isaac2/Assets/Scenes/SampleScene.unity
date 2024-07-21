@@ -393,14 +393,43 @@ MonoBehaviour:
   currentNumOpenings: 0
   startingRooms:
   - {fileID: 4526248146777727167, guid: 5576ab223df41774c9b6b7f96755a7c5, type: 3}
-  topPieces:
+  topConPieces:
+  - {fileID: 4526248146777727167, guid: de83180d6de3ae84fbe929f4cd8e408d, type: 3}
   - {fileID: 4526248146777727167, guid: 5576ab223df41774c9b6b7f96755a7c5, type: 3}
-  bottomPieces:
+  - {fileID: 4526248146777727167, guid: 99c636054dea4f344947d70fe99fc309, type: 3}
+  - {fileID: 4526248146777727167, guid: 7378f0be19941c244851ef366ac513e1, type: 3}
+  - {fileID: 4526248146777727167, guid: dc4639e49b0ac2640a1440ddb450daae, type: 3}
+  - {fileID: 4526248146777727167, guid: 9c3ce76f05dabbb4daee0af3a45c61aa, type: 3}
+  - {fileID: 4526248146777727167, guid: 3bf0a8947bb6b5847b456ccedaa5ddcd, type: 3}
+  - {fileID: 4526248146777727167, guid: 2ab1afdbef68adb44bdb42874ad8fef0, type: 3}
+  bottomConPieces:
+  - {fileID: 4526248146777727167, guid: 8032cc9c99a250b4fa2c2669b8262a10, type: 3}
+  - {fileID: 4526248146777727167, guid: 1ca79cc58f7e3004095b607f17231112, type: 3}
+  - {fileID: 4526248146777727167, guid: a4ec004e71abaa04c80794fa16ed1bf5, type: 3}
+  - {fileID: 4526248146777727167, guid: 7378f0be19941c244851ef366ac513e1, type: 3}
+  - {fileID: 4526248146777727167, guid: 9c3ce76f05dabbb4daee0af3a45c61aa, type: 3}
+  - {fileID: 4526248146777727167, guid: 3bf0a8947bb6b5847b456ccedaa5ddcd, type: 3}
+  - {fileID: 4526248146777727167, guid: 1029bd088ea703645a716bd00d151a00, type: 3}
+  - {fileID: 4526248146777727167, guid: 2ab1afdbef68adb44bdb42874ad8fef0, type: 3}
+  leftConPieces:
+  - {fileID: 4526248146777727167, guid: cc92d9e99ee33ee4a9839ebec6644b4f, type: 3}
+  - {fileID: 4526248146777727167, guid: 99c636054dea4f344947d70fe99fc309, type: 3}
+  - {fileID: 4526248146777727167, guid: a4ec004e71abaa04c80794fa16ed1bf5, type: 3}
+  - {fileID: 4526248146777727167, guid: 052c74fd99ef3294ca02112eab894880, type: 3}
+  - {fileID: 4526248146777727167, guid: dc4639e49b0ac2640a1440ddb450daae, type: 3}
+  - {fileID: 4526248146777727167, guid: 3bf0a8947bb6b5847b456ccedaa5ddcd, type: 3}
+  - {fileID: 4526248146777727167, guid: 1029bd088ea703645a716bd00d151a00, type: 3}
+  - {fileID: 4526248146777727167, guid: 2ab1afdbef68adb44bdb42874ad8fef0, type: 3}
+  rightConPieces:
+  - {fileID: 4526248146777727167, guid: 715a855b1491a014c80c24e947e5a1a8, type: 3}
   - {fileID: 4526248146777727167, guid: 5576ab223df41774c9b6b7f96755a7c5, type: 3}
-  leftPieces:
-  - {fileID: 4526248146777727167, guid: 5576ab223df41774c9b6b7f96755a7c5, type: 3}
-  rightPieces:
-  - {fileID: 4526248146777727167, guid: 5576ab223df41774c9b6b7f96755a7c5, type: 3}
+  - {fileID: 4526248146777727167, guid: 1ca79cc58f7e3004095b607f17231112, type: 3}
+  - {fileID: 4526248146777727167, guid: 052c74fd99ef3294ca02112eab894880, type: 3}
+  - {fileID: 4526248146777727167, guid: dc4639e49b0ac2640a1440ddb450daae, type: 3}
+  - {fileID: 4526248146777727167, guid: 9c3ce76f05dabbb4daee0af3a45c61aa, type: 3}
+  - {fileID: 4526248146777727167, guid: 1029bd088ea703645a716bd00d151a00, type: 3}
+  - {fileID: 4526248146777727167, guid: 2ab1afdbef68adb44bdb42874ad8fef0, type: 3}
+  closingPiece: {fileID: 4526248146777727167, guid: 2ab1afdbef68adb44bdb42874ad8fef0, type: 3}
   rooms: []
 --- !u!4 &1470695469
 Transform:

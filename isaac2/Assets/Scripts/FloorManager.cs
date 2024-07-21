@@ -13,10 +13,12 @@ public class FloorManager : MonoBehaviour
     [SerializeField] private int currentNumOpenings;
 
     [SerializeField] private List<GameObject> startingRooms;
-    [SerializeField] private List<GameObject> topPieces;
-    [SerializeField] private List<GameObject> bottomPieces;
-    [SerializeField] private List<GameObject> leftPieces;
-    [SerializeField] private List<GameObject> rightPieces;
+    [SerializeField] private List<GameObject> topConPieces;
+    [SerializeField] private List<GameObject> bottomConPieces;
+    [SerializeField] private List<GameObject> leftConPieces;
+    [SerializeField] private List<GameObject> rightConPieces;
+
+    [SerializeField] private GameObject closingPiece;
 
     [SerializeField] private List<GameObject> rooms;
     // Start is called before the first frame update
@@ -37,7 +39,7 @@ public class FloorManager : MonoBehaviour
         firstRoom.name = "" + firstRoom.transform.position.x + " - " + firstRoom.transform.position.y;
         rooms.Add(firstRoom);
         currentNumRooms = 1;
-        currentNumOpenings = firstRoom.GetComponent<Room>().GetEmptyNumOpenings();
+        currentNumOpenings = firstRoom.GetComponent<Room>().GetNumOpenings();
 
         
         while (currentNumRooms < maxNumRooms)
@@ -45,36 +47,62 @@ public class FloorManager : MonoBehaviour
             int roomsAdded = 0;
             for (int i = 0; i < currentNumRooms; i++)
             {
-                if (rooms[i].GetComponent<Room>().GetTopRoom() == null)
-                {
-                    GameObject newTopRoom = Instantiate(topPieces[Random.Range(0, topPieces.Count - 1)], new Vector3(rooms[i].transform.position.x, rooms[i].transform.position.y + yScale, transform.position.z), transform.rotation);
-                    newTopRoom.name = "" + newTopRoom.transform.position.x + " - " + newTopRoom.transform.position.y;
-                    rooms.Add(newTopRoom);
-                    roomsAdded++;
-                }
-                if (rooms[i].GetComponent<Room>().GetBottomRoom() == null)
-                {
-                    GameObject newBottomRoom = Instantiate(topPieces[Random.Range(0, topPieces.Count - 1)], new Vector3(rooms[i].transform.position.x, rooms[i].transform.position.y - yScale, transform.position.z), transform.rotation);
-                    newBottomRoom.name = "" + newBottomRoom.transform.position.x + " - " + newBottomRoom.transform.position.y;
-                    rooms.Add(newBottomRoom);
-                    roomsAdded++;
-                }
-                if (rooms[i].GetComponent<Room>().GetLeftRoom() == null)
-                {
-                    GameObject newLeftRoom = Instantiate(topPieces[Random.Range(0, topPieces.Count - 1)], new Vector3(rooms[i].transform.position.x - xScale, rooms[i].transform.position.y, transform.position.z), transform.rotation);
-                    newLeftRoom.name = "" + newLeftRoom.transform.position.x + " - " + newLeftRoom.transform.position.y;
-                    rooms.Add(newLeftRoom);
-                    roomsAdded++;
-                }
-                if (rooms[i].GetComponent<Room>().GetRightRoom() == null)
-                {
-                    GameObject newRightRoom = Instantiate(topPieces[Random.Range(0, topPieces.Count - 1)], new Vector3(rooms[i].transform.position.x + xScale, rooms[i].transform.position.y, transform.position.z), transform.rotation);
-                    newRightRoom.name = "" + newRightRoom.transform.position.x + " - " + newRightRoom.transform.position.y;
-                    rooms.Add(newRightRoom);
-                    roomsAdded++;
-                }
+                roomsAdded += SpawnRoom(rooms[i], false);
+                
             }
             currentNumRooms += roomsAdded;
         }
+
+        Debug.Log("");
+        for (int i = 0; i < currentNumRooms; i++)
+        {        
+            rooms[i].GetComponent<Room>().CloseRooms();
+        }
+        
+    }
+
+    private int SpawnRoom(GameObject BaseRoom, bool destroyRoom)
+    {
+        int roomsAdded = 0;
+        if (BaseRoom.GetComponent<Room>().GetTopRoom() == null)
+        {
+            GameObject newTopRoom = Instantiate(topConPieces[Random.Range(0, topConPieces.Count)], new Vector3(BaseRoom.transform.position.x, BaseRoom.transform.position.y + yScale, transform.position.z), transform.rotation);
+            bool spawned = newTopRoom.GetComponent<Room>().WallCheck(destroyRoom);
+            if (spawned)
+            {
+                rooms.Add(newTopRoom);
+                roomsAdded ++;
+            }
+        }
+        if (BaseRoom.GetComponent<Room>().GetBottomRoom() == null)
+        {
+            GameObject newBottomRoom = Instantiate(bottomConPieces[Random.Range(0, bottomConPieces.Count)], new Vector3(BaseRoom.transform.position.x, BaseRoom.transform.position.y - yScale, transform.position.z), transform.rotation);
+            bool spawned = newBottomRoom.GetComponent<Room>().WallCheck(destroyRoom);
+            if (spawned) {
+                rooms.Add(newBottomRoom);
+                roomsAdded++;
+            }
+        }
+        if (BaseRoom.GetComponent<Room>().GetLeftRoom() == null)
+        {
+            GameObject newLeftRoom = Instantiate(leftConPieces[Random.Range(0, leftConPieces.Count)], new Vector3(BaseRoom.transform.position.x - xScale, BaseRoom.transform.position.y, transform.position.z), transform.rotation);
+            bool spawned = newLeftRoom.GetComponent<Room>().WallCheck(destroyRoom);
+            if (spawned)
+            {
+                rooms.Add(newLeftRoom);
+                roomsAdded++;
+            }
+        }
+        if (BaseRoom.GetComponent<Room>().GetRightRoom() == null)
+        {
+            GameObject newRightRoom = Instantiate(rightConPieces[Random.Range(0, rightConPieces.Count)], new Vector3(BaseRoom.transform.position.x + xScale, BaseRoom.transform.position.y, transform.position.z), transform.rotation);
+            bool spawned = newRightRoom.GetComponent<Room>().WallCheck(destroyRoom);
+            if (spawned)
+            {
+                rooms.Add(newRightRoom);
+                roomsAdded++;
+            }
+        }
+        return roomsAdded;
     }
 }
