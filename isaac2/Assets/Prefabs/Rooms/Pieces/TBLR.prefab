@@ -489,12 +489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4464300997f2cd24492317a32d1535e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xScale: 18
-  yScale: 18
-  topPieces: []
-  bottomPieces: []
-  leftPieces: []
-  rightPieces: []
   topRoom: {fileID: 0}
   bottomRoom: {fileID: 0}
   leftRoom: {fileID: 0}
@@ -503,9 +497,16 @@ MonoBehaviour:
   bottomDoorCheck: {fileID: 5065251228513213506}
   leftDoorCheck: {fileID: 4981265142313789237}
   rightDoorCheck: {fileID: 928775324121729092}
+  topWallCheck: {fileID: 0}
+  bottomWallCheck: {fileID: 0}
+  leftWallCheck: {fileID: 0}
+  rightWallCheck: {fileID: 0}
   doorLayer:
     serializedVersion: 2
     m_Bits: 64
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &5409448529553101089
 GameObject:
   m_ObjectHideFlags: 0

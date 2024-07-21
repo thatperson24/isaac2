@@ -388,7 +388,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xScale: 18
   yScale: 18
-  maxNumRooms: 12
+  maxNumRooms: 30
   currentNumRooms: 0
   currentNumOpenings: 0
   startingRooms:

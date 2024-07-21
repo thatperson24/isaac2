@@ -47,10 +47,9 @@ public class FloorManager : MonoBehaviour
             int roomsAdded = 0;
             for (int i = 0; i < currentNumRooms; i++)
             {
-                roomsAdded += SpawnRoom(rooms[i], false);
-                
+                roomsAdded += SpawnRoom(rooms[i], false);                
             }
-            currentNumRooms += roomsAdded;
+            currentNumRooms += roomsAdded;    
         }
 
         Debug.Log("");

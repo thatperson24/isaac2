@@ -21,30 +21,32 @@ public class Room : MonoBehaviour
     [SerializeField] private Transform rightWallCheck;
 
     [SerializeField] private LayerMask doorLayer;
+    [SerializeField] private LayerMask wallLayer;
     // Start is called before the first frame update
     void Awake()
     {
-        this.gameObject.name = "" + transform.position.x + " - " + transform.position.y;
-
-        if (topDoorCheck != null && Physics2D.OverlapCircle(topDoorCheck.position, .25f, doorLayer) != null)
+        if (WallCheck(false))
         {
-            topRoom = Physics2D.OverlapCircle(topDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.transform.parent.gameObject; ;
-            topRoom.GetComponent<Room>().SetRoom("Bottom", this.gameObject);
-        }
-        if (bottomDoorCheck != null && Physics2D.OverlapCircle(bottomDoorCheck.position, .25f, doorLayer) != null)
-        {
-            bottomRoom = Physics2D.OverlapCircle(bottomDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.transform.parent.gameObject;
-            bottomRoom.GetComponent<Room>().SetRoom("Top", this.gameObject);
-        }
-        if (leftDoorCheck != null && Physics2D.OverlapCircle(leftDoorCheck.position, .25f, doorLayer) != null)
-        {
-            leftRoom = Physics2D.OverlapCircle(leftDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.transform.parent.gameObject;
-            leftRoom.GetComponent<Room>().SetRoom("Right", this.gameObject);
-        }
-        if (rightDoorCheck != null && Physics2D.OverlapCircle(rightDoorCheck.position, .25f, doorLayer) != null)
-        {
-            rightRoom = Physics2D.OverlapCircle(rightDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.transform.parent.gameObject;
-            rightRoom.GetComponent<Room>().SetRoom("Left", this.gameObject);
+            if (topDoorCheck != null && Physics2D.OverlapCircle(topDoorCheck.position, .25f, doorLayer) != null)
+            {
+                topRoom = Physics2D.OverlapCircle(topDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.transform.parent.gameObject; ;
+                topRoom.GetComponent<Room>().SetRoom("Bottom", this.gameObject);
+            }
+            if (bottomDoorCheck != null && Physics2D.OverlapCircle(bottomDoorCheck.position, .25f, doorLayer) != null)
+            {
+                bottomRoom = Physics2D.OverlapCircle(bottomDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.transform.parent.gameObject;
+                bottomRoom.GetComponent<Room>().SetRoom("Top", this.gameObject);
+            }
+            if (leftDoorCheck != null && Physics2D.OverlapCircle(leftDoorCheck.position, .25f, doorLayer) != null)
+            {
+                leftRoom = Physics2D.OverlapCircle(leftDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.transform.parent.gameObject;
+                leftRoom.GetComponent<Room>().SetRoom("Right", this.gameObject);
+            }
+            if (rightDoorCheck != null && Physics2D.OverlapCircle(rightDoorCheck.position, .25f, doorLayer) != null)
+            {
+                rightRoom = Physics2D.OverlapCircle(rightDoorCheck.position, .25f, doorLayer).gameObject.transform.parent.gameObject.transform.parent.gameObject;
+                rightRoom.GetComponent<Room>().SetRoom("Left", this.gameObject);
+            }
         }
     }
 
@@ -128,6 +130,14 @@ public class Room : MonoBehaviour
                 Destroy(this.gameObject);
                 return false;
             }
+            if ((topDoorCheck != null && Physics2D.OverlapCircle(topDoorCheck.position, .25f, wallLayer) != null) ||
+                (bottomDoorCheck != null && Physics2D.OverlapCircle(bottomDoorCheck.position, .25f, wallLayer) != null) ||
+                (leftDoorCheck != null && Physics2D.OverlapCircle(leftDoorCheck.position, .25f, wallLayer) != null) ||
+                (rightDoorCheck != null && Physics2D.OverlapCircle(rightDoorCheck.position, .25f, wallLayer) != null))
+            {
+                Destroy(this.gameObject);
+                return false;
+            }
             else
             {
                 return true;
@@ -157,7 +167,7 @@ public class Room : MonoBehaviour
 
     public void CloseRooms()
     {
-        if(topRoom == null)
+        if (topRoom == null)
         {
             this.gameObject.transform.Find("Doors").Find("Top").gameObject.SetActive(false);
         }
@@ -169,7 +179,7 @@ public class Room : MonoBehaviour
         {
             this.gameObject.transform.Find("Doors").Find("Left").gameObject.SetActive(false);
         }
-        if (rightRoom == null)
+        if (rightRoom == null) 
         {
             this.gameObject.transform.Find("Doors").Find("Right").gameObject.SetActive(false);
         }
