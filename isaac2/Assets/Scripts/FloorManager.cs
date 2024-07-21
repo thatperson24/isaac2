@@ -50,6 +50,13 @@ public class FloorManager : MonoBehaviour
                 roomsAdded += SpawnRoom(rooms[i], false);                
             }
             currentNumRooms += roomsAdded;    
+            if(GetOpeningsCount() == 0)
+            {
+                for (int i = 0;i < 2; i++)
+                {
+                    rooms.RemoveAt(rooms.Count - 1);
+                }
+            }
         }
 
         Debug.Log("");
@@ -103,5 +110,15 @@ public class FloorManager : MonoBehaviour
             }
         }
         return roomsAdded;
+    }
+
+    private int GetOpeningsCount()
+    {
+        int openings = 0;
+        foreach (GameObject room in rooms)
+        {
+            openings += room.GetComponent<Room>().GetNumOpenings();
+        }
+        return openings;
     }
 }

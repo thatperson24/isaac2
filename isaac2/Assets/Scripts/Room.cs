@@ -25,6 +25,7 @@ public class Room : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        this.gameObject.name = this.gameObject.transform.position.x + " - " + this.gameObject.transform.position.y;
         if (WallCheck(false))
         {
             if (topDoorCheck != null && Physics2D.OverlapCircle(topDoorCheck.position, .25f, doorLayer) != null)
