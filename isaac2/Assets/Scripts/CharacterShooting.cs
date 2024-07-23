@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class CharacterShooting : MonoBehaviour
 {
+    [SerializeField] private Transform gunPivot;
+    [Range(0, 60)][SerializeField] private float rotationSpeed = 4;
+    public Camera cam;
+
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float shootCD;
     private bool canShoot;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,36 +21,35 @@ public class CharacterShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        RotateGun();
         if (canShoot)
         {
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.Mouse0))
             {
-                StartCoroutine(shoot(0, 1));
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                StartCoroutine(shoot(0, -1));
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                StartCoroutine(shoot(1, 0));
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                StartCoroutine(shoot(-1, 0));
+                StartCoroutine(shoot());
             }
         }
     }
 
-    IEnumerator shoot(float xModifier, float yModifier)
+    IEnumerator shoot()
     {
-        GameObject newBullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        GameObject newBullet = Instantiate(bulletPrefab, gunPivot.position, gunPivot.rotation);
         //Rotate later depending on sprite
         newBullet.transform.Rotate(0, 0, 0);
-        float bulletSpeed = 5f; //Set using getters
-        newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(bulletSpeed * xModifier, bulletSpeed * yModifier);
+        float bulletSpeed = newBullet.GetComponent<Bullet>().GetBulletSpeed();
+        newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(bulletSpeed * newBullet.transform.right.x, bulletSpeed * newBullet.transform.right.y);
         canShoot = false;
         yield return new WaitForSeconds(shootCD);
         canShoot = true;
+    }
+
+    void RotateGun()
+    {
+        Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+
+        Vector3 distanceVector = mousePos - gunPivot.position;
+        float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
+        gunPivot.rotation = Quaternion.Lerp(gunPivot.rotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * rotationSpeed);
     }
 }
