@@ -19,11 +19,11 @@ public class CharacterMovement : MonoBehaviour
     private void FixedUpdate()
     {
         //Horizontal movement
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
             rb.velocity = new Vector2(speed, rb.velocity.y);
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.A))
         {
             rb.velocity = new Vector2(-1f * speed, rb.velocity.y);
         }
@@ -33,11 +33,11 @@ public class CharacterMovement : MonoBehaviour
         }
 
         //Vertical movement
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.W))
         {
             rb.velocity = new Vector2(rb.velocity.x, speed);
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.S))
         {
             rb.velocity = new Vector2(rb.velocity.x, -1f * speed);
         }

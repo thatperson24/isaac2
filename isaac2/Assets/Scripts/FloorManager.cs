@@ -35,36 +35,44 @@ public class FloorManager : MonoBehaviour
 
     public void GenerateFloor()
     {
-        GameObject firstRoom = Instantiate(startingRooms[Random.Range(0,startingRooms.Count - 1)],transform.position, transform.rotation);
+        /*GameObject firstRoom = Instantiate(startingRooms[Random.Range(0,startingRooms.Count - 1)],transform.position, transform.rotation);
         firstRoom.name = "" + firstRoom.transform.position.x + " - " + firstRoom.transform.position.y;
         rooms.Add(firstRoom);
         currentNumRooms = 1;
-        currentNumOpenings = firstRoom.GetComponent<Room>().GetNumOpenings();
-
-        
+        currentNumOpenings = firstRoom.GetComponent<Room>().GetNumOpenings();*/
         while (currentNumRooms < maxNumRooms)
         {
+            if (rooms.Count == 0)
+            {
+                SpawnFirstRoom();
+            }
+            Debug.LogWarning("While loop entered");
             int roomsAdded = 0;
             for (int i = 0; i < currentNumRooms; i++)
             {
+                Debug.Log("Spawn for loop");
                 roomsAdded += SpawnRoom(rooms[i]);                
             }
             currentNumRooms += roomsAdded;    
             if(GetOpeningsCount() == 0)
             {
+                Debug.LogError("Oops no opening");
                 for (int i = 0;i < 2; i++)
                 {
                     rooms.RemoveAt(rooms.Count - 1);
                     currentNumRooms --;
                 }
+                break;
             }
+            Debug.LogWarning("MaxRooms: " + maxNumRooms + " - CNR: " + currentNumRooms);
         }
-
+        Debug.LogWarning("While loop exited");
         for (int i = 0; i < currentNumRooms; i++)
         {        
             rooms[i].GetComponent<Room>().CloseRooms();
+            Debug.Log("Closing room: " + i);
         }
-        
+        Debug.LogWarning("Closing loop exited");
     }
 
     private int SpawnRoom(GameObject BaseRoom)
@@ -120,5 +128,14 @@ public class FloorManager : MonoBehaviour
             openings += room.GetComponent<Room>().GetNumOpenings();
         }
         return openings;
+    }
+
+    private void SpawnFirstRoom()
+    {
+        GameObject firstRoom = Instantiate(startingRooms[Random.Range(0, startingRooms.Count - 1)], transform.position, transform.rotation);
+        firstRoom.name = "" + firstRoom.transform.position.x + " - " + firstRoom.transform.position.y;
+        rooms.Add(firstRoom);
+        currentNumRooms = 1;
+        currentNumOpenings = firstRoom.GetComponent<Room>().GetNumOpenings();
     }
 }
