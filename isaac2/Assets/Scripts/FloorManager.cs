@@ -44,7 +44,7 @@ public class FloorManager : MonoBehaviour
         {
             if (rooms.Count == 0)
             {
-                SpawnFirstRoom();
+                SpawnFirstRoom(); //For the time being, comment the entire loop out and move this function call outside of the loop so at least one room spawns.
             }
             Debug.LogWarning("While loop entered");
             int roomsAdded = 0;
