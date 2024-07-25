@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5899680564508330335}
   - component: {fileID: 2281258308146393956}
   - component: {fileID: 1696153043667194091}
+  - component: {fileID: -5983664817356884799}
   m_Layer: 0
   m_Name: EnemyTest
   m_TagString: Untagged
@@ -125,7 +126,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9737276282a85b74ebf1295ec1ce7daa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   detectDistance: 5
   forgetDistance: 6
-  isAlert: 0
+--- !u!114 &-5983664817356884799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6861672975685441882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 434329ee232bb014c99da7a4ad8f5e6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
