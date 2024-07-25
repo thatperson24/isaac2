@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class EnemyDetectPlayer : MonoBehaviour
 {
-    [SerializeField] private GameObject player;
+    /// <summary>
+    /// Enemies detect if Player is nearby based on proximity.
+    /// Enemies may not detect Player until rather close, but will take
+    /// longer to forget.
+    /// - Would like to implement detection based on gunfire as well. 
+    ///     (i.e., even if Player is far away, Enemy will detect Player if Player is shooting at Enemy)
+    /// - Could also take into account time for forgetfulness.
+    /// - Could drop this entirely and make enemies alert at all times.
+    /// - Detection could be based on direction enemy is facing / field of view.
+    /// - Could detect when in the same room.
+    /// </summary>
     [SerializeField] private float detectDistance;
     [SerializeField] private float forgetDistance;
+    private GameObject player;
     private float distance;
-    public bool isAlert;
+    private bool isAlert;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -36,5 +47,10 @@ public class EnemyDetectPlayer : MonoBehaviour
                 isAlert = true;
             }
         }
+    }
+
+    public bool getIsAlert()
+    {
+        return isAlert;
     }
 }
