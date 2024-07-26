@@ -49,8 +49,16 @@ public class EnemyDetectPlayer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Return whether or not the current enemy is alert 
+    /// (i.e., aware of player and actively pursuing).
+    /// </summary>
+    /// <returns></returns>
     public bool getIsAlert()
     {
         return isAlert;
     }
+
+    // TODO: collision detection? if bullet collides with enemy, 
+    // enemy is alert for x amount of time?
 }
