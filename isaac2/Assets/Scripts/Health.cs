@@ -6,11 +6,16 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     /// <summary>
+    /// IDK C# DOCUMENTATION CONVENTIONS HELP!!!!!!!!!
+    /// 
     /// Health class stores entity health and deals with setting, incrementing,
     /// and fetching both current and max health.
     /// Also detects death and overheal.
     /// Used by other scripts.
     /// </summary>
+
+    // TODO: if we want health bars they could be handled here
+
     [SerializeField] private int maxHealth;  // or float?
     private int health;
     
@@ -18,6 +23,7 @@ public class Health : MonoBehaviour
     void Start()
     {
         // Does health need to be initialized here ever? (Unity question)
+        // If not needed can we delete this method or what
     }
 
     // Update is called once per frame
@@ -26,10 +32,7 @@ public class Health : MonoBehaviour
         // Could implement gradual natural healing over time I guess?
     }
 
-
-
     /// <summary>
-    /// IDK C# DOCUMENTATION CONVENTIONS HELP!!!!!!!!!
     /// Returns current health of entity.
     /// </summary>
     /// <returns></returns>
@@ -105,8 +108,8 @@ public class Health : MonoBehaviour
     public int Damage(int delta = 1)
     {
         return IncrementHealth(-delta); 
-        // convention question - damage param negative or positive?
-        // visual cues?
+        // convention question: is damage param negative or positive?
+        // TODO: visual cues?
     }
 
     /// <summary>
@@ -120,7 +123,7 @@ public class Health : MonoBehaviour
     public int Heal(int delta = 1)
     {
         return IncrementHealth(delta);
-        // visual cues?
+        // TODO: visual cues?
     }
 
     /// <summary>
@@ -131,6 +134,7 @@ public class Health : MonoBehaviour
     public int FullHeal() // or resetHealth() ??
     {
         return SetHealth(maxHealth);
+        // TODO: visual cues?
     }
 
     /// <summary>
@@ -149,7 +153,7 @@ public class Health : MonoBehaviour
             return maxHealth;
         }
         // TODO: maybe put max constraints on maxHealth
-        
+
         maxHealth = newMaxHealth;
         return maxHealth;
     }
