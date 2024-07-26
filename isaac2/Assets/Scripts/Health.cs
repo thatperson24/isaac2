@@ -73,8 +73,9 @@ public class Health : MonoBehaviour
         else if (newHealth <= 0) // YOU DIED
         {
             health = 0;
-            // initiate death stuff - 
-            // obviously differs between players and enemies so might need to
+            // TODO: initiate death stuff
+            
+            // obviously death differs between players and enemies so might need to
             // have separate health scripts for each to account for that?
             // enemies - either despawn or just chill as a corpse
             // player - uhhhhhhhhhhhhhhhh
