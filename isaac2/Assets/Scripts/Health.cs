@@ -17,20 +17,21 @@ public class Health : MonoBehaviour
     // TODO: if we want health bars they could be handled here
 
     [SerializeField] private int maxHealth;  // or float?
-    private int health;
+    [SerializeField] private int health;
     
     // Start is called before the first frame update
     void Start()
     {
-        // Does health need to be initialized here ever? (Unity question)
-        // If not needed can we delete this method or what
+        health = maxHealth;
+        // Does maxhealth need to be initialized here ever? (Unity question)
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    //void Update()
+    //{
         // Could implement gradual natural healing over time I guess?
-    }
+        // otherwise can we delete this method entirely (Unity question)
+    //}
 
     /// <summary>
     /// Returns current health of entity.
@@ -131,7 +132,7 @@ public class Health : MonoBehaviour
     /// Returns current maxHealth (probably unnecessary).
     /// </summary>
     /// <returns></returns>
-    public int FullHeal() // or resetHealth() ??
+    public int ResetHealth()
     {
         return SetHealth(maxHealth);
         // TODO: visual cues?
