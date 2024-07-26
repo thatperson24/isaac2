@@ -19,7 +19,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     [SerializeField] private float forgetDistance;
     private GameObject player;
     private float distance;
-    private bool isAlert;
+    [SerializeField] private bool isAlert;
     
     // Start is called before the first frame update
     void Start()
