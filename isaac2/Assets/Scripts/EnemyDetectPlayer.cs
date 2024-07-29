@@ -8,12 +8,26 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// Enemies detect if Player is nearby based on proximity.
     /// Enemies may not detect Player until rather close, but will take
     /// longer to forget.
-    /// - Would like to implement detection based on gunfire as well. 
-    ///     (i.e., even if Player is far away, Enemy will detect Player if Player is shooting at Enemy)
-    /// - Could also take into account time for forgetfulness.
-    /// - Could drop this entirely and make enemies alert at all times.
-    /// - Detection could be based on direction enemy is facing / field of view.
-    /// - Could detect when in the same room.
+    /// 
+    /// NOTES:
+    /// Detect player/begin attacking
+    ///     - When Player is x distance away
+    ///     - When Player attacks
+    ///         - Enemy is passive only until attacked
+    ///         - Enemy can't see Player, Player attacks, enemy is alert
+    ///         - Enemy can't see Player, Player attacks, enemy is confused & ignores
+    ///     - When Player enters Enemy field of vision
+    ///     - When Player shines light at Enemy
+    ///     - When Player interacts with an object/makes noise
+    ///     - When Player enters room
+    ///     - Enemy is always alert
+    /// Forget player/stop attacking
+    ///     - When Player gets x distance away
+    ///     - When x amount of time passes
+    ///     - When Player leaves Enemy FOV
+    ///     - When Player takes specific action to hide
+    ///     - When Player leaves room
+    ///     - Enemy never forgets after detecting Player
     /// </summary>
     [SerializeField] private float detectDistance;
     [SerializeField] private float forgetDistance;
