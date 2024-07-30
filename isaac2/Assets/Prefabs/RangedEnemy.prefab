@@ -173,8 +173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9737276282a85b74ebf1295ec1ce7daa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectDistance: 7
-  forgetDistance: 10
+  detectDistance: 6
+  forgetDistance: 8
   isAlert: 0
 --- !u!114 &-5983664817356884799
 MonoBehaviour:
@@ -203,5 +203,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseSpeed: 0
-  speed: 1
-  followingDistance: 0
+  speed: 2
+  followingDistance: 4
