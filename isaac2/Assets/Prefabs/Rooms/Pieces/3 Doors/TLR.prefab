@@ -467,7 +467,7 @@ MonoBehaviour:
   leftDoorCheck: {fileID: 4981265142313789237}
   rightDoorCheck: {fileID: 928775324121729092}
   topWallCheck: {fileID: 0}
-  bottomWallCheck: {fileID: 0}
+  bottomWallCheck: {fileID: 844003311980005877}
   leftWallCheck: {fileID: 0}
   rightWallCheck: {fileID: 0}
   doorLayer:
