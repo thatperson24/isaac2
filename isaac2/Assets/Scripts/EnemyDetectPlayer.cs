@@ -5,40 +5,30 @@ using UnityEngine;
 public class EnemyDetectPlayer : MonoBehaviour
 {
     /// <summary>
-    /// Enemies detect if Player is nearby based on proximity.
-    /// Enemies may not detect Player until rather close, but will take
-    /// longer to forget.
+    /// Enemies detect if Player is nearby based on radial proximity.
     /// 
-    /// NOTES:
-    /// Detect player/begin attacking
-    ///     - When Player is x distance away
-    ///     - When Player attacks
-    ///         - Enemy is passive only until attacked
-    ///         - Enemy can't see Player, Player attacks, enemy is alert
-    ///         - Enemy can't see Player, Player attacks, enemy is confused & ignores
+    /// TODO:
+    /// Detect player/begin attacking...
     ///     - When Player enters Enemy field of vision
+    ///     - When Player attacks
+    ///         - Enemy can't see Player, Player attacks, enemy is Alert
+    ///         - Enemy can't see Player, Player attacks, enemy is confused & ignores
     ///     - When Player shines light at Enemy
     ///     - When Player interacts with an object/makes noise
-    ///     - When Player enters room
-    ///     - Enemy is always alert
-    /// Forget player/stop attacking
-    ///     - When Player gets x distance away
-    ///     - When x amount of time passes
-    ///     - When Player leaves Enemy FOV
-    ///     - When Player takes specific action to hide
-    ///     - When Player leaves room
     ///     - Enemy never forgets after detecting Player
     /// </summary>
-    [SerializeField] private float detectDistance;
-    [SerializeField] private float forgetDistance;
-    private GameObject player;
-    private float distance;
+    
     [SerializeField] private bool isAlert;
+    private GameObject player;
+
+    [SerializeField] private float detectDistance;  // TODO: Refactor into realistic FOV
+    private float distance;
     
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        isAlert = false;  // unless some enemies are always Alert?
     }
 
     // Update is called once per frame
@@ -46,33 +36,46 @@ public class EnemyDetectPlayer : MonoBehaviour
     {
         distance = Vector2.Distance(transform.position, player.transform.position);
         
-        // condense this
-        if (isAlert) 
-        {
-            if (distance > forgetDistance)
-            {
-                isAlert = false;
-            }
-        }
-        else 
-        {
-            if (distance < detectDistance)
-            {
-                isAlert = true;
-            }
-        }
+        isAlert = isAlert || (distance < detectDistance);
+        // TODO: Implement realistic angular line of sight
+        // TODO: Factor in obstacles blocking line of sight
+        // TODO: Consider blind enemies?
     }
 
+
+    // TODO: Collision detection, if bullet collides with Enemy, set to Alert
+    //      - "dumb" Enemy may not be Alert on attack if can't see Player
+    // TODO: Light detection, if flashlight shone at Enemy, set to Alert
+    // TODO: "sound" detection, if Player interacts with objects, set Enemies in radius to Alert
+    //      - Would a 360 hearing radius make sense as well, such as for blind enemies?
+    //      - Consider deaf enemies?
+
+
     /// <summary>
-    /// Return whether or not the current enemy is alert 
-    /// (i.e., aware of player and actively pursuing).
+    ///     Return whether or not the current enemy is Alert
+    ///     (i.e., aware of player and actively pursuing).
     /// </summary>
-    /// <returns></returns>
-    public bool getIsAlert()
+    /// <returns>isAlert</returns>
+    public bool GetIsAlert()
     {
         return isAlert;
     }
 
-    // TODO: collision detection? if bullet collides with enemy, 
-    // enemy is alert for x amount of time?
+    /// <summary>
+    ///     Set "isAlert" bool to given new value.
+    /// </summary>
+    /// <param name="newIsAlert"></param>
+    public void SetIsAlert(bool newIsAlert)
+    {
+        isAlert = newIsAlert;
+    }
+
+    /// <summary>
+    ///     Set "isAlert" bool to true,
+    ///     i.e., make Enemy aware of Player location.
+    /// </summary>
+    public void Alert()
+    {
+        SetIsAlert(true);
+    }
 }
