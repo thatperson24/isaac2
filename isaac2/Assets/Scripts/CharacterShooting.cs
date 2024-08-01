@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterShooting : MonoBehaviour
 {
     [SerializeField] private Transform gunPivot;
+    [SerializeField] private Transform firingPoint;
     [Range(0, 60)][SerializeField] private float rotationSpeed = 4;
     public Camera cam;
 
@@ -34,7 +35,7 @@ public class CharacterShooting : MonoBehaviour
 
     IEnumerator shoot()
     {
-        GameObject newBullet = Instantiate(bulletPrefab, gunPivot.position, gunPivot.rotation);
+        GameObject newBullet = Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
         //Rotate later depending on sprite
         newBullet.transform.Rotate(0, 0, 0);
         float bulletSpeed = newBullet.GetComponent<Bullet>().GetBulletSpeed();

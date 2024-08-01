@@ -25,6 +25,11 @@ public class Room : MonoBehaviour
     [SerializeField] private LayerMask doorLayer;
     [SerializeField] private LayerMask wallLayer;
 
+    [Header("Enemies")]
+    [SerializeField] private List<GameObject> enemies;
+    [SerializeField] private int enemyBudget;
+    private int numEnemies;
+
     //On initalization
     void Awake()
     {
@@ -171,5 +176,10 @@ public class Room : MonoBehaviour
         {
             this.gameObject.transform.Find("Doors").Find("Right").gameObject.SetActive(false);
         }
+    }
+
+    public int GetNumEnemies()
+    {
+        return numEnemies; 
     }
 }
