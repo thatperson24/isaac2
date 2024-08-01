@@ -6,31 +6,23 @@ public class EnemyPursue : MonoBehaviour
 {
     /// <summary>
     /// Enemies pursue Player when Alert.
-    /// Enemies may keep a set following distance.
+    /// Enemies may keep a set follow distance 
+    ///     (and eventually, flee when Player is too close).
+    /// Enemies have a base speed at which they travel,
+    ///     and a current speed that may be higher or lower
+    ///     depending on status effects.
     /// 
-    /// NOTES:
+    /// TODO:
     /// Pursue Player
-    ///     - Stay in place, never pursue
-    ///     - Pursue when Alert
-    ///     - Following distance
-    ///         - Always try to touch Player (melee & explosive attacks, etc.)
-    ///         - Keep a set distance away (ranged attacks, etc.)
-    ///             - Flee when Player gets closer than following distance
-    ///             - Allow Player to get close
-    ///     - Pathing
-    ///         - Elements of randomness
-    ///         - Avoid obstacles & dangers
-    ///         - Avoid walls & navigate corners
+    ///     - Elements of randomness
+    ///     - Avoid obstacles & dangers
+    ///     - Avoid walls & navigate corners
     /// Flee Player
-    ///     - Enemies could flee under certain conditions (low health, ranged attacks)
+    ///     - Ranged enemies flee when Player is too close.
+    ///     - Low health, etc.
     /// Speed
-    ///     - Not the current velocity, but how "fast" an enemy is?
-    ///     - Base speed
-    ///         - Set on spawn
-    ///         - Different types of enemy, different speeds
-    ///         - Randomly selected from range
-    ///     - Speed
-    ///         - Can be changed by powerups/effects
+    ///     - Base speed randomness?
+    ///     - Speed changed by powerups/effects
     ///         
     /// </summary>
 
@@ -39,7 +31,9 @@ public class EnemyPursue : MonoBehaviour
     [SerializeField] private float baseSpeed;  // constant?
     [SerializeField] private float curSpeed;
     private bool isAlert;
-    [SerializeField] private float followingDistance;  // Distance from player an enemy would like to be
+    // Follow distance = Distance from player an Enemy would like to be
+    [SerializeField] private float minFollowDistance;  // Enemy will flee when Player gets this close
+    [SerializeField] private float maxFollowDistance;  // Enemy will flee/pursue until this close to Player
     private float distance;
 
     // Start is called before the first frame update
@@ -57,7 +51,7 @@ public class EnemyPursue : MonoBehaviour
             distance = Vector2.Distance(transform.position, player.transform.position);
 
             isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert();
-            if (isAlert && distance > followingDistance)
+            if (isAlert && distance > maxFollowDistance)
             {
                 transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, curSpeed * Time.deltaTime);
             }
@@ -112,28 +106,58 @@ public class EnemyPursue : MonoBehaviour
     }
 
     /// <summary>
-    ///     Returns the distance Enemy would like to be from player.
-    ///     Enemy will pursue player until reaches this distance, 
-    ///     and then will stop pursuit.
+    ///     Returns the minimum distance Enemy would like to be from Player.
+    ///     If Player approaches Enemy within this distance, Enemy will flee
+    ///     to maxFollowingDistance.
     ///     More for ranged Enemies - 
-    ///     melee Enemies will probably have this value set to 0.
+    ///     Melee Enemies will probably have this value set to 0.
     /// </summary>
-    /// <returns>followingDistance</returns>
-    public float GetFollowingDistance()
+    /// <returns>minFollowDistance</returns>
+    public float GetMinFollowDistance()
     {
-        return followingDistance;
+        return minFollowDistance;
     }
 
     /// <summary>
-    ///     Sets the distance Enemy would like to be from player.
-    ///     Enemy will pursue player until reaches this distance, 
+    ///     Returns the maxmium distance Enemy would like to be from Player.
+    ///     Enemy will pursue Player until reaches this distance, 
     ///     and then will stop pursuit.
-    ///     More for ranged combat Enemies - 
-    ///     melee Enemies will probably want this value set to 0.
+    ///     If Player gets too close (minFollowingDistance), Enemy will flee
+    ///     to this distance.
+    ///     More for ranged Enemies - 
+    ///     Melee Enemies will probably have this value set to 0.
     /// </summary>
-    /// <param name="newFollowingDistance"></param>
-    public void SetFollowingDistance(float newFollowingDistance)
+    /// <returns>maxFollowDistance</returns>
+    public float GetMaxFollowDistance()
     {
-        followingDistance = newFollowingDistance;
+        return maxFollowDistance;
+    }
+
+    /// <summary>
+    ///     Sets the minimum distance Enemy would like to be from Player to given value.
+    ///     If Player approaches Enemy within this distance, Enemy will flee
+    ///     to maxFollowingDistance.
+    ///     More for ranged Enemies - 
+    ///     Melee Enemies will probably have this value set to 0.
+    /// </summary>
+    /// <param name="newMinFollowDistance"></param>
+    public void SetMinFollowDistance(float newMinFollowDistance)
+    {
+        minFollowDistance = newMinFollowDistance;
+    }
+
+    /// <summary>
+    ///     Sets the maxmium distance Enemy would like to be from Player to given value.
+    ///     Enemy will pursue Player until reaches this distance, 
+    ///     and then will stop pursuit.
+    ///     If Player gets too close (minFollowingDistance), Enemy will flee
+    ///     to this distance.
+    ///     More for ranged Enemies - 
+    ///     Melee Enemies will probably have this value set to 0.
+    /// </summary>
+    /// <param name="newMaxFollowDistance"></param>
+    public void SetMaxFollowDistance(float newMaxFollowDistance)
+    {
+        maxFollowDistance = newMaxFollowDistance;
     }
 }
