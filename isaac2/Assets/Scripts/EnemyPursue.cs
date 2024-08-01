@@ -34,6 +34,7 @@ public class EnemyPursue : MonoBehaviour
     // Follow distance = Distance from player an Enemy would like to be
     [SerializeField] private float minFollowDistance;  // Enemy will flee when Player gets this close
     [SerializeField] private float maxFollowDistance;  // Enemy will flee/pursue until this close to Player
+    // NOTE: a skittish enemy could have an infinite/large follow distance in order to always flee Player? 
     private float distance;
 
     // Start is called before the first frame update
@@ -47,13 +48,17 @@ public class EnemyPursue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!this.GetComponent<Health>().GetIsDead()) {  // stop updates if enemy is dead
+        if (!this.GetComponent<Health>().GetIsDead()) {  // Stop updates if Enemy is dead
             distance = Vector2.Distance(transform.position, player.transform.position);
 
             isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert();
             if (isAlert && distance > maxFollowDistance)
             {
                 transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, curSpeed * Time.deltaTime);
+            }
+            else if (isAlert && distance < minFollowDistance)
+            {
+                transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, -curSpeed * Time.deltaTime);
             }
         }
     }
