@@ -16,13 +16,14 @@ public class Health : MonoBehaviour
 
     // TODO: if we want health bars they could be handled here
 
-    [SerializeField] private int maxHealth;  // or float?
-    [SerializeField] private int health;
+    [SerializeField] private int maxHealth;
+    [SerializeField] private int curHealth;
+    [SerializeField] private bool isDead;
     
     // Start is called before the first frame update
     void Start()
     {
-        health = maxHealth;
+        curHealth = maxHealth;
     }
 
     // Update is called once per frame
@@ -35,10 +36,10 @@ public class Health : MonoBehaviour
     /// <summary>
     ///     Returns current health of entity.
     /// </summary>
-    /// <returns>health</returns>
-    public int GetHealth()
+    /// <returns>curHealth</returns>
+    public int GetCurHealth()
     {
-        return health;
+        return curHealth;
     }
 
     /// <summary>
@@ -56,25 +57,25 @@ public class Health : MonoBehaviour
     ///     Detects and prevents overheal.
     ///     Detects death and prevents negative health.
     ///     Resists attemps to heal/damage a dead entity.
-    ///     Returns new health in case caller needs (detect death etc.).
+    ///     Returns new curHealth in case caller needs (detect death etc.).
     /// </summary>
     /// <param name="amount"></param>
-    /// <returns>health</returns>
-    private int SetHealth(int newHealth) 
+    /// <returns>curHealth</returns>
+    private int SetCurHealth(int newHealth) 
     {
-        if (health == 0) // ALREADY DEAD
+        if (isDead || curHealth == 0) // ALREADY DEAD
         {
-            return health;  // prevent healing of dead entities
+            return curHealth;  // prevent healing of dead entities
         }
         else if (newHealth > maxHealth) // OVERHEAL
         {
-            health = maxHealth;
+            curHealth = maxHealth;
             // TODO: overheal - could block use of heal item or convert heal to something else
         }
         else if (newHealth <= 0) // YOU DIED
         {
-            health = 0;
-            // TODO: initiate death stuff
+            curHealth = 0;
+            EnemyDeath();
             
             // obviously death differs between players and enemies so might need to
             // have separate health scripts for each to account for that?
@@ -83,13 +84,13 @@ public class Health : MonoBehaviour
         }
         else
         {
-            health = newHealth;
+            curHealth = newHealth;
         }
-        return health;
+        return curHealth;
     }
 
     /// <summary>
-    ///     Increment current health by given + or - delta amount.
+    ///     Increment current health by given +/- delta amount.
     ///     Calls setHealth which handles death, overheal, etc.
     ///     Delta is 1 by default (enemy heals by 1 HP).
     ///     Resists attemps to heal/damage a dead entity.
@@ -97,9 +98,9 @@ public class Health : MonoBehaviour
     /// </summary>
     /// <param name="delta"></param>
     /// <returns>health</returns>
-    private int IncrementHealth(int delta = 1)
+    private int IncrementCurHealth(int delta = 1)
     {
-        return SetHealth(health + delta);
+        return SetCurHealth(curHealth + delta);
     }
 
     /// <summary>
@@ -112,7 +113,7 @@ public class Health : MonoBehaviour
     /// <returns>health</returns>
     public int Damage(int delta = 1)
     {
-        return IncrementHealth(-delta);
+        return IncrementCurHealth(-delta);
     }
 
     /// <summary>
@@ -126,7 +127,7 @@ public class Health : MonoBehaviour
     /// <returns>health</returns>
     public int Heal(int delta = 1)
     {
-        return IncrementHealth(delta);
+        return IncrementCurHealth(delta);
     }
 
     /// <summary>
@@ -136,12 +137,13 @@ public class Health : MonoBehaviour
     /// <returns>health</returns>
     public int ResetHealth()
     {
-        return SetHealth(maxHealth);
+        return SetCurHealth(maxHealth);
     }
 
     /// <summary>
     ///     Set max health to given amount.
     ///     Could be used for powerups etc.
+    ///     Resists attempts to set maxHealth to 0 or less.
     ///     Returns maxHealth in case caller needs.
     /// </summary>
     /// <param name="newMaxHealth"></param>
@@ -150,7 +152,7 @@ public class Health : MonoBehaviour
     {
         if (newMaxHealth <= 0)
         {
-            // Resist change
+            // Resist change (or set to 1?)
             return maxHealth;
         }
         // TODO: Maybe put upper bounds on maxHealth
@@ -170,5 +172,17 @@ public class Health : MonoBehaviour
     {
         // TODO: deal with constraints / error checking
         return SetMaxHealth(maxHealth + delta);
+    }
+
+    /// <summary>
+    ///     Initiate Enemy death process.
+    /// </summary>
+    public void EnemyDeath()
+    {
+        isDead = true;
+        // TODO: set isAlert to false;
+        // TODO: set curSpeed to 0;
+        // TODO: remove entity
+        // TODO: replace entity with "corpse" entity with no AI (or collision?)
     }
 }
