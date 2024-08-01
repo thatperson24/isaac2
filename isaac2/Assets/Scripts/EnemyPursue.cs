@@ -36,8 +36,8 @@ public class EnemyPursue : MonoBehaviour
 
 
     private GameObject player;
-    [SerializeField] private float baseSpeed;
-    [SerializeField] private float speed;
+    [SerializeField] private float baseSpeed;  // constant?
+    [SerializeField] private float curSpeed;
     private bool isAlert;
     [SerializeField] private float followingDistance;  // Distance from player an enemy would like to be
     private float distance;
@@ -57,17 +57,17 @@ public class EnemyPursue : MonoBehaviour
         isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert();
         if (isAlert && distance > followingDistance)
         {
-            transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, curSpeed * Time.deltaTime);
         }
     }
 
     /// <summary>
     ///     Returns the current speed at which an Enemy travels.
     /// </summary>
-    /// <returns>speed</returns>
-    public float GetSpeed()
+    /// <returns>curSpeed</returns>
+    public float GetCurSpeed()
     {
-        return speed;
+        return curSpeed;
     }
 
     /// <summary>
@@ -77,26 +77,26 @@ public class EnemyPursue : MonoBehaviour
     /// <param name="newSpeed"></param>
     public void SetSpeed(float newSpeed)
     {
-        speed = newSpeed;
+        curSpeed = newSpeed;
     }
 
     /// <summary>
-    ///     Increment an Enemy's speed by a given delta amount.
+    ///     Increment an Enemy's current speed by a given delta amount.
     ///     Could be used for powerups/events/etc.
     /// </summary>
     /// <param name="newSpeed"></param>
     public void IncrementSpeed(float delta)
     {
-        speed += delta;
+        curSpeed += delta;
     }
 
     /// <summary>
-    ///     Set an Enemy's speed back to its base speed.
+    ///     Set an Enemy's current speed back to its base speed.
     ///     Could be used after a speed-increasing effect wears off.
     /// </summary>
     public void ResetSpeed()
     {
-        speed = baseSpeed;
+        curSpeed = baseSpeed;
     }
 
     /// <summary>
