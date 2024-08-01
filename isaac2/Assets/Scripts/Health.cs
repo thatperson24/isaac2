@@ -175,13 +175,22 @@ public class Health : MonoBehaviour
     }
 
     /// <summary>
+    ///     Return whether or not entity is dead.
+    /// </summary>
+    /// <returns>isDead</returns>
+    public bool GetIsDead()
+    {
+        return isDead;
+    }
+
+    /// <summary>
     ///     Initiate Enemy death process.
     /// </summary>
     public void EnemyDeath()
     {
         isDead = true;
-        // TODO: set isAlert to false;
-        // TODO: set curSpeed to 0;
+        this.GetComponent<EnemyPursue>().SetCurSpeed(0);
+        // TODO: unalert/stop detecting player?
         // TODO: remove entity
         // TODO: replace entity with "corpse" entity with no AI (or collision?)
     }

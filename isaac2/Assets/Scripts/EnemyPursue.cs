@@ -46,18 +46,21 @@ public class EnemyPursue : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        curSpeed = baseSpeed;
         isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert(); 
     }
 
     // Update is called once per frame
     void Update()
     {
-        distance = Vector2.Distance(transform.position, player.transform.position);
+        if (!this.GetComponent<Health>().GetIsDead()) {  // stop updates if enemy is dead
+            distance = Vector2.Distance(transform.position, player.transform.position);
 
-        isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert();
-        if (isAlert && distance > followingDistance)
-        {
-            transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, curSpeed * Time.deltaTime);
+            isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert();
+            if (isAlert && distance > followingDistance)
+            {
+                transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, curSpeed * Time.deltaTime);
+            }
         }
     }
 
@@ -75,7 +78,7 @@ public class EnemyPursue : MonoBehaviour
     ///     Could be used for powerups/events/etc.
     /// </summary>
     /// <param name="newSpeed"></param>
-    public void SetSpeed(float newSpeed)
+    public void SetCurSpeed(float newSpeed)
     {
         curSpeed = newSpeed;
     }
@@ -85,7 +88,7 @@ public class EnemyPursue : MonoBehaviour
     ///     Could be used for powerups/events/etc.
     /// </summary>
     /// <param name="newSpeed"></param>
-    public void IncrementSpeed(float delta)
+    public void IncrementCurSpeed(float delta)
     {
         curSpeed += delta;
     }
@@ -94,7 +97,7 @@ public class EnemyPursue : MonoBehaviour
     ///     Set an Enemy's current speed back to its base speed.
     ///     Could be used after a speed-increasing effect wears off.
     /// </summary>
-    public void ResetSpeed()
+    public void ResetCurSpeed()
     {
         curSpeed = baseSpeed;
     }

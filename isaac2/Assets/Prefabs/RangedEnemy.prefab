@@ -173,9 +173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9737276282a85b74ebf1295ec1ce7daa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectDistance: 6
-  forgetDistance: 8
   isAlert: 0
+  detectDistance: 6
 --- !u!114 &-5983664817356884799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +188,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  health: 10
+  curHealth: 0
+  isDead: 0
 --- !u!114 &7698214876862720360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +202,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7926178f6cb24894086dd31dfe53bed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 0
-  speed: 2
+  baseSpeed: 2
+  curSpeed: 0
   followingDistance: 4
