@@ -23,7 +23,6 @@ public class Health : MonoBehaviour
     void Start()
     {
         health = maxHealth;
-        // Does maxhealth need to be initialized here ever? (Unity question)
     }
 
     // Update is called once per frame
@@ -34,32 +33,34 @@ public class Health : MonoBehaviour
     //}
 
     /// <summary>
-    /// Returns current health of entity.
+    ///     Returns current health of entity.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>health</returns>
     public int GetHealth()
     {
         return health;
     }
 
     /// <summary>
-    /// Returns current maxHealth of entity.
+    ///     Returns current maxHealth of entity.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>maxHealth</returns>
     public int GetMaxHealth()
     {
         return maxHealth;
     }
 
     /// <summary>
-    /// Set current health to a new health value.
-    /// Prevents health modification to already dead entities.
-    /// Detects and prevents overheal.
-    /// Detects death and prevents negative health.
-    /// Returns new health in case caller needs (detect death etc.).
+    ///     Set current health to a new health value.
+    ///     Prevents health modification to already dead entities.
+    ///     Detects and prevents overheal.
+    ///     Detects death and prevents negative health.
+    ///     Resists attemps to heal/damage a dead entity.
+    ///     Returns new health in case caller needs (detect death etc.).
     /// </summary>
     /// <param name="amount"></param>
-    public int SetHealth(int newHealth) 
+    /// <returns>health</returns>
+    private int SetHealth(int newHealth) 
     {
         if (health == 0) // ALREADY DEAD
         {
@@ -68,7 +69,7 @@ public class Health : MonoBehaviour
         else if (newHealth > maxHealth) // OVERHEAL
         {
             health = maxHealth;
-            // overheal - could block use of heal item or convert heal to something else
+            // TODO: overheal - could block use of heal item or convert heal to something else
         }
         else if (newHealth <= 0) // YOU DIED
         {
@@ -88,86 +89,83 @@ public class Health : MonoBehaviour
     }
 
     /// <summary>
-    /// Increment current health by given + or - delta amount.
-    /// Calls setHealth which handles death, overheal, etc.
-    /// Delta is 1 by default (enemy heals by 1 HP).
-    /// Returns new health in case caller needs (detect death, etc.).
+    ///     Increment current health by given + or - delta amount.
+    ///     Calls setHealth which handles death, overheal, etc.
+    ///     Delta is 1 by default (enemy heals by 1 HP).
+    ///     Resists attemps to heal/damage a dead entity.
+    ///     Returns new health in case caller needs.
     /// </summary>
     /// <param name="delta"></param>
-    /// <returns></returns>
-    public int IncrementHealth(int delta = 1)
+    /// <returns>health</returns>
+    private int IncrementHealth(int delta = 1)
     {
         return SetHealth(health + delta);
     }
 
     /// <summary>
-    /// Decrement current health (damage) by given delta amount.
-    /// Delta is 1 by default (entity takes 1 HP damage).
-    /// Returns new health in case caller needs (detect death, etc.).
+    ///     Decrement current health (damage) by given delta amount.
+    ///     Delta is 1 by default (entity takes 1 HP damage).
+    ///     Resists attemps to damage a dead entity.
+    ///     Returns new health in case caller needs.
     /// </summary>
     /// <param name="delta"></param>
-    /// <returns></returns>
+    /// <returns>health</returns>
     public int Damage(int delta = 1)
     {
-        return IncrementHealth(-delta); 
-        // convention question: is damage param negative or positive?
-        // TODO: visual cues?
+        return IncrementHealth(-delta);
     }
 
     /// <summary>
-    /// Increment current health (heal) by given delta amount.
-    /// Delta is 1 by default (entity heals 1 HP).
-    /// Returns new health in case caller needs.
-    /// Might want to return overheal flag???
+    ///     Increment current health (heal) by given delta amount.
+    ///     Delta is 1 by default (entity heals 1 HP).
+    ///     Resists attemps to heal a dead entity.
+    ///     Returns new health in case caller needs.
+    ///     Might want to return overheal flag?
     /// </summary>
     /// <param name="delta"></param>
-    /// <returns></returns>
+    /// <returns>health</returns>
     public int Heal(int delta = 1)
     {
         return IncrementHealth(delta);
-        // TODO: visual cues?
     }
 
     /// <summary>
-    /// Set current health to the max health / fully heal entity.
-    /// Returns current maxHealth (probably unnecessary).
+    ///     Set current health to the max health / fully heal entity.
+    ///     Resists attemps to heal a dead entity.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>health</returns>
     public int ResetHealth()
     {
         return SetHealth(maxHealth);
-        // TODO: visual cues?
     }
 
     /// <summary>
-    /// Set max health to given amount.
-    /// Could be used for powerups etc.
-    /// Returns maxHealth in case caller needs.
+    ///     Set max health to given amount.
+    ///     Could be used for powerups etc.
+    ///     Returns maxHealth in case caller needs.
     /// </summary>
     /// <param name="newMaxHealth"></param>
-    /// <returns></returns>
+    /// <returns>maxHealth</returns>
     public int SetMaxHealth(int newMaxHealth) 
     {
-        if (newMaxHealth <= 0)  // THATS ILLEGAL
+        if (newMaxHealth <= 0)
         {
-            // ERROR!! resist change (or maybe set to 1?)
-            // TODO: throw error?
+            // Resist change
             return maxHealth;
         }
-        // TODO: maybe put max constraints on maxHealth
-
+        // TODO: Maybe put upper bounds on maxHealth
         maxHealth = newMaxHealth;
         return maxHealth;
     }
 
     /// <summary>
-    /// Increment maxHealth by given delta amount.
-    /// Delta is 1 by default (entity gets 1 more max HP).
-    /// Could be used for powerups etc.
-    /// Returns new maxHealth in case caller needs.
+    ///     Increment maxHealth by given delta amount.
+    ///     Delta is 1 by default (entity gets 1 more max HP).
+    ///     Could be used for powerups etc.
+    ///     Returns new maxHealth in case caller needs.
     /// </summary>
     /// <param name="delta"></param>
-    /// <returns></returns>
+    /// <returns>maxHealth</returns>
     public int IncrementMaxHealth(int delta = 1) 
     {
         // TODO: deal with constraints / error checking

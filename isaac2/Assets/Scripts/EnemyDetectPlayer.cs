@@ -63,9 +63,11 @@ public class EnemyDetectPlayer : MonoBehaviour
 
     /// <summary>
     ///     Set "isAlert" bool to given new value.
+    ///     Private for now but depending on how we want to
+    ///     use this, could be made public.
     /// </summary>
     /// <param name="newIsAlert"></param>
-    public void SetIsAlert(bool newIsAlert)
+    private void SetIsAlert(bool newIsAlert)
     {
         isAlert = newIsAlert;
     }
@@ -74,7 +76,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     ///     Set "isAlert" bool to true,
     ///     i.e., make Enemy aware of Player location.
     /// </summary>
-    public void Alert()
+    public void AlertEnemy()
     {
         SetIsAlert(true);
     }

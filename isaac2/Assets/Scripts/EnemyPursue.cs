@@ -5,13 +5,13 @@ using UnityEngine;
 public class EnemyPursue : MonoBehaviour
 {
     /// <summary>
-    /// Enemies pursue Player when alert.
+    /// Enemies pursue Player when Alert.
     /// Enemies may keep a set following distance.
     /// 
     /// NOTES:
     /// Pursue Player
     ///     - Stay in place, never pursue
-    ///     - Pursue when alert
+    ///     - Pursue when Alert
     ///     - Following distance
     ///         - Always try to touch Player (melee & explosive attacks, etc.)
     ///         - Keep a set distance away (ranged attacks, etc.)
@@ -39,14 +39,14 @@ public class EnemyPursue : MonoBehaviour
     [SerializeField] private float baseSpeed;
     [SerializeField] private float speed;
     private bool isAlert;
-    [SerializeField] private float followingDistance;  // amount of distance from player an enemy would like to be
+    [SerializeField] private float followingDistance;  // Distance from player an enemy would like to be
     private float distance;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        isAlert = this.GetComponent<EnemyDetectPlayer>().getIsAlert(); 
+        isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert(); 
     }
 
     // Update is called once per frame
@@ -54,7 +54,7 @@ public class EnemyPursue : MonoBehaviour
     {
         distance = Vector2.Distance(transform.position, player.transform.position);
 
-        isAlert = this.GetComponent<EnemyDetectPlayer>().getIsAlert();
+        isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert();
         if (isAlert && distance > followingDistance)
         {
             transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * Time.deltaTime);
@@ -62,16 +62,17 @@ public class EnemyPursue : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns the speed at which an Enemy travels.
+    ///     Returns the current speed at which an Enemy travels.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>speed</returns>
     public float GetSpeed()
     {
         return speed;
     }
 
     /// <summary>
-    /// Set an Enemy's speed to a given speed.
+    ///     Set an Enemy's current speed to a given speed.
+    ///     Could be used for powerups/events/etc.
     /// </summary>
     /// <param name="newSpeed"></param>
     public void SetSpeed(float newSpeed)
@@ -80,7 +81,8 @@ public class EnemyPursue : MonoBehaviour
     }
 
     /// <summary>
-    /// Increment an Enemy's speed by a given delta amount.
+    ///     Increment an Enemy's speed by a given delta amount.
+    ///     Could be used for powerups/events/etc.
     /// </summary>
     /// <param name="newSpeed"></param>
     public void IncrementSpeed(float delta)
@@ -89,7 +91,8 @@ public class EnemyPursue : MonoBehaviour
     }
 
     /// <summary>
-    /// Set an Enemy's speed back to its base speed.
+    ///     Set an Enemy's speed back to its base speed.
+    ///     Could be used after a speed-increasing effect wears off.
     /// </summary>
     public void ResetSpeed()
     {
@@ -97,33 +100,33 @@ public class EnemyPursue : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns the base speed at which an Enemy travels.
+    ///     Returns the base speed at which an Enemy travels.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>baseSpeed</returns>
     public float GetBaseSpeed()
     {
         return baseSpeed;
     }
 
     /// <summary>
-    /// Returns the distance an enemy would like to be from player.
-    /// Enemy will pursue player until reaches this distance, and then
-    /// will stop pursuit.
-    /// More for ranged combat enemies - melee enemies
-    /// will probably have this value set to 0.
+    ///     Returns the distance Enemy would like to be from player.
+    ///     Enemy will pursue player until reaches this distance, 
+    ///     and then will stop pursuit.
+    ///     More for ranged Enemies - 
+    ///     melee Enemies will probably have this value set to 0.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>followingDistance</returns>
     public float GetFollowingDistance()
     {
         return followingDistance;
     }
 
     /// <summary>
-    /// Sets the distance an enemy would like to be from player.
-    /// Enemy will pursue player until reaches this distance, and then
-    /// will stop pursuit.
-    /// More for ranged combat enemies - melee enemies
-    /// will probably want this value set to 0.
+    ///     Sets the distance Enemy would like to be from player.
+    ///     Enemy will pursue player until reaches this distance, 
+    ///     and then will stop pursuit.
+    ///     More for ranged combat Enemies - 
+    ///     melee Enemies will probably want this value set to 0.
     /// </summary>
     /// <param name="newFollowingDistance"></param>
     public void SetFollowingDistance(float newFollowingDistance)
