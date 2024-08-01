@@ -204,4 +204,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSpeed: 2
   curSpeed: 0
-  followingDistance: 0
+  minFollowDistance: 0
+  maxFollowDistance: 0
