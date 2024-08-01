@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,15 +7,14 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     /// <summary>
-    /// IDK C# DOCUMENTATION CONVENTIONS HELP!!!!!!!!!
-    /// 
     /// Health class stores entity health and deals with setting, incrementing,
     /// and fetching both current and max health.
     /// Also detects death and overheal.
-    /// Used by other scripts.
+    /// In theory this was meant to be shared between Player and Enemy,
+    /// but I am not sure if that is a good idea or not.
     /// </summary>
 
-    // TODO: if we want health bars they could be handled here
+    // TODO: If we want health bars they could be handled here
 
     [SerializeField] private int maxHealth;
     [SerializeField] private int curHealth;
@@ -150,13 +150,8 @@ public class Health : MonoBehaviour
     /// <returns>maxHealth</returns>
     public int SetMaxHealth(int newMaxHealth) 
     {
-        if (newMaxHealth <= 0)
-        {
-            // Resist change (or set to 1?)
-            return maxHealth;
-        }
         // TODO: Maybe put upper bounds on maxHealth
-        maxHealth = newMaxHealth;
+        maxHealth = Math.Max(1, newMaxHealth);
         return maxHealth;
     }
 
@@ -170,7 +165,6 @@ public class Health : MonoBehaviour
     /// <returns>maxHealth</returns>
     public int IncrementMaxHealth(int delta = 1) 
     {
-        // TODO: deal with constraints / error checking
         return SetMaxHealth(maxHealth + delta);
     }
 
