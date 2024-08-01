@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security;
+using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -26,5 +29,15 @@ public class Bullet : MonoBehaviour
     {
         yield return new WaitForSeconds(bulletLifeSpan);
         Destroy(this.gameObject);
+    }
+
+    // bullet is trigger collider, damages enemy when hit
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            collision.gameObject.GetComponent<Health>().Damage(); // HP - 1
+        }
+        Destroy(gameObject);  // destroy bullet after collision
     }
 }
