@@ -45,7 +45,7 @@ public class CameraMovement : MonoBehaviour
         }
         else if (transform.localPosition.y < -0.01f && position.y != topLimit.position.y - vertical)
         {
-            deltax = cameraSpeed * Time.deltaTime * .5f;
+            deltay = cameraSpeed * Time.deltaTime * .5f;
         }
         position.y = Mathf.Clamp(position.y + deltay, bottomLimit.position.y + vertical, topLimit.position.y - vertical);
 
