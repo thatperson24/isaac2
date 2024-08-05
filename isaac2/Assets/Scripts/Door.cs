@@ -94,4 +94,9 @@ public class Door : MonoBehaviour
     {
         doorActive = value;
     }
+
+    public DOOR GetDoorLocation()
+    {
+        return doorLocation;
+    }
 }

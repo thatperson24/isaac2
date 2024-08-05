@@ -157,6 +157,7 @@ MonoBehaviour:
   bottomLimit: {fileID: 0}
   camera: {fileID: 519420031}
   cameraSpeed: 100
+  transitionSpeed: 12
 --- !u!4 &388007872
 Transform:
   m_ObjectHideFlags: 0

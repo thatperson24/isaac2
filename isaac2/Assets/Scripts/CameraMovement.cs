@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -12,11 +13,17 @@ public class CameraMovement : MonoBehaviour
 
     [SerializeField] private Camera camera;
     [SerializeField] private float cameraSpeed;
+    [SerializeField] private float transitionSpeed;
+
     private bool limitsReady;
+    private bool isTransitioning;
+    private float[] transitionDir;
     // Start is called before the first frame update
     void Start()
     {
         limitsReady = false;
+        isTransitioning = false;
+        transitionDir = new float[2];
     }
 
     // Update is called once per frame
@@ -54,6 +61,13 @@ public class CameraMovement : MonoBehaviour
 
             transform.position = position;
         }
+        if(isTransitioning)
+        {
+            Vector3 position = transform.position;
+            position.x += transitionDir[0] * Time.deltaTime * transitionSpeed;
+            position.y += transitionDir[1] * Time.deltaTime * transitionSpeed * 9/16f;
+            transform.position = position;
+        }
     }
 
     public void SetTop(Transform limit)
@@ -78,6 +92,17 @@ public class CameraMovement : MonoBehaviour
 
     public void SetLimitsReady(bool val)
     {
-        limitsReady = true;
+        limitsReady = val;
+    }
+
+    public void SetIsTransitioning(bool val)
+    {
+        isTransitioning = val; 
+    }
+
+    public void SetTransitionDir(int x, int y)
+    {
+        transitionDir[0] = x;
+        transitionDir[1] = y;
     }
 }
