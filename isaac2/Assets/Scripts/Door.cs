@@ -36,6 +36,7 @@ public class Door : MonoBehaviour
         playerChecker.AddComponent<BoxCollider2D>();
         playerChecker.GetComponent<BoxCollider2D>().isTrigger = true;
         playerChecker.name = "Player Check";
+        playerChecker.tag = "PlayerDoorCheck";
 
         int xOffset = 0;
         int yOffset = 0;
@@ -60,5 +61,35 @@ public class Door : MonoBehaviour
 
         playerChecker.transform.position = new Vector2(transform.position.x + xOffset, transform.position.y + yOffset);
         playerChecker.transform.parent = this.transform;
+    }
+
+    public void SpawnButtonPrompt()
+    {
+        GameObject doorPrompt = new GameObject();
+        doorPrompt.AddComponent<SpriteRenderer>();
+        doorPrompt.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Circle");
+        doorPrompt.name = "Door Prompt";
+
+        int xOffset = 0;
+        int yOffset = 0;
+        switch (doorLocation)
+        {
+            case DOOR.TOP:
+                yOffset = -1;
+                break;
+            case DOOR.BOTTOM:
+                yOffset = 1;
+                break;
+            case DOOR.LEFT:
+                xOffset = 1;
+                break;
+            case DOOR.RIGHT:
+                xOffset = -1;
+                break;
+        }
+
+        doorPrompt.transform.position = new Vector2(transform.position.x + xOffset, transform.position.y + yOffset);
+        doorPrompt.transform.parent = this.transform;
+
     }
 }

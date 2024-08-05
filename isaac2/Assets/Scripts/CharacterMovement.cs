@@ -57,4 +57,20 @@ public class CharacterMovement : MonoBehaviour
             character.transform.localScale = localScale;
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("PlayerDoorCheck"))
+        {
+            collision.gameObject.transform.parent.GetComponent<Door>().SpawnButtonPrompt(); //Spawns button prompt to enter door
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("PlayerDoorCheck"))
+        {
+            Destroy(collision.gameObject.transform.parent.transform.GetChild(2).gameObject); //Despawns button prompt to enter door.
+        }
+    }
 }
