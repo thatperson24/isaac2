@@ -12,7 +12,7 @@ public class Door : MonoBehaviour
     }
 
     [SerializeField] private DOOR doorLocation;
-
+    private bool doorActive;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,13 +21,6 @@ public class Door : MonoBehaviour
 
     private void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void SpawnTrigger()
@@ -90,6 +83,15 @@ public class Door : MonoBehaviour
 
         doorPrompt.transform.position = new Vector2(transform.position.x + xOffset, transform.position.y + yOffset);
         doorPrompt.transform.parent = this.transform;
+    }
 
+    public bool GetDoorActive()
+    {
+        return doorActive;
+    }
+
+    public void SetDoorActive(bool value) 
+    {
+        doorActive = value;
     }
 }

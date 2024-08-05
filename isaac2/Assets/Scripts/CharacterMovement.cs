@@ -60,7 +60,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("PlayerDoorCheck"))
+        if (collision.gameObject.CompareTag("PlayerDoorCheck") && collision.gameObject.transform.parent.GetComponent<Door>().GetDoorActive())
         {
             collision.gameObject.transform.parent.GetComponent<Door>().SpawnButtonPrompt(); //Spawns button prompt to enter door
         }
@@ -68,7 +68,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("PlayerDoorCheck"))
+        if (collision.gameObject.CompareTag("PlayerDoorCheck") && collision.gameObject.transform.parent.GetComponent<Door>().GetDoorActive())
         {
             Destroy(collision.gameObject.transform.parent.transform.GetChild(2).gameObject); //Despawns button prompt to enter door.
         }

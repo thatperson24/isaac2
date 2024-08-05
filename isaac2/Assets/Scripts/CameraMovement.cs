@@ -58,7 +58,6 @@ public class CameraMovement : MonoBehaviour
 
     public void SetTop(Transform limit)
     {
-        Debug.LogWarning(limit.gameObject.name);
         topLimit = limit;
     }
 
