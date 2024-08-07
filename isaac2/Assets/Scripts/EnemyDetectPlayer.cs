@@ -18,11 +18,17 @@ public class EnemyDetectPlayer : MonoBehaviour
     ///     - Enemy never forgets after detecting Player
     /// </summary>
     
-    [SerializeField] private bool isAlert;
-    private GameObject player;
-
-    [SerializeField] private float detectDistance;  // TODO: Refactor into realistic FOV
     private float distance;
+    private GameObject player;
+    
+    [SerializeField] private bool isAlert;
+    
+    [SerializeField] private float hearingRadius;  // possibly unnecessary - hearingRadius = 0
+    private bool canHear;
+    [SerializeField] private float sightRadius;
+    private bool canSee;  // possibly unnecessary - sightRadius = 0
+    private bool canDetectOnAttack;
+
     
     // Start is called before the first frame update
     void Start()
@@ -36,7 +42,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     {
         distance = Vector2.Distance(transform.position, player.transform.position);
         
-        isAlert = isAlert || (distance < detectDistance);
+        isAlert = isAlert || (distance < hearingRadius);
         // TODO: Implement realistic angular line of sight
         // TODO: Factor in obstacles blocking line of sight
         // TODO: Consider blind enemies?
