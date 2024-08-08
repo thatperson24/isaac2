@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAlert: 0
-  hearingRadius: 5
+  hearingRadius: 0
   sightRadius: 5
   sightAngle: 45
 --- !u!114 &-5983664817356884799
