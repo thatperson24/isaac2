@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -7,20 +8,19 @@ using UnityEngine.Animations;
 public class EnemyDetectPlayer : MonoBehaviour
 {
     /// <summary>
-    /// Enemies detect if Player is nearby based on radial proximity.
-    /// 
-    /// TODO:
-    /// Detect player/begin attacking...
-    ///     - When Player enters Enemy field of vision
-    ///     - When Player attacks
-    ///         - Enemy can't see Player, Player attacks, enemy is Alert
-    ///         - Enemy can't see Player, Player attacks, enemy is confused & ignores
-    ///     - When Player shines light at Enemy
-    ///     - When Player interacts with an object/makes noise
-    ///     - Enemy never forgets after detecting Player
+    /// Enemy detects if Player is nearby based on Hearing and Sight.
+    /// Within a set hearing radius, Enemy can "hear" when:
+    ///     - Player enters
+    ///     - TODO: Player moves fast?
+    ///     - TODO: Player interacts with an object
+    ///     - TODO: Player shoots a Bullet
+    /// Within a set sight radius & angle, Enemy can "see":
+    ///     - TODO: Player
+    ///     - TODO: Player flashlight cast
+    ///     - TODO: Player Bullet
+    /// Enemy can be deaf or blind.
     /// </summary>
     
-    private float distanceFromPlayer;
     private GameObject player;
     
     [SerializeField] private bool isAlert;
@@ -51,7 +51,7 @@ public class EnemyDetectPlayer : MonoBehaviour
 
     /// <summary>
     ///     While Enemy is not Alert, attempt to detect Player
-    ///     via hearing and vision every 0.2 seconds.
+    ///     via hearing and sight every 0.2 seconds.
     ///     Stops when Enemy is Alerted.
     ///     NOTE: Enemy currently cannot be un-Alerted.
     /// </summary>
@@ -64,30 +64,50 @@ public class EnemyDetectPlayer : MonoBehaviour
         while (!isAlert && !isDead)
         {
             yield return wait;
-            distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
             if (hearingRadius >= 0)  // not deaf
             {
                 EnemyHearing();
             }
             if (sightRadius >= 0 && !isAlert)  // not blind, not detected via hearing
             {
-                EnemyVision();
+                EnemySight();
             }
             
         }
     }
 
-    private void EnemyVision()
+    private void EnemySight()
     {
+        int playerLayer = 8;
+        int layerMask = 1 << playerLayer;
         // TODO: Create FOV cone
-        // TODO: Detect when Player within FOV
-        // TODO: Detect when Player's Flashlight within FOV
+        Collider2D[] FOV = Physics2D.OverlapCircleAll(this.transform.position, sightRadius, layerMask);  // draw radius on Player layer (8)
+
+        if(FOV.Length > 0)  // if any entity (Player) detected in radius
+        {
+            Collider2D playerCollider = FOV[0];
+            Vector2 directionToPlayer = (playerCollider.transform.position - this.transform.position).normalized;
+
+            if (Vector2.Angle(this.transform.right, directionToPlayer) < sightAngle * 0.5)  // if Player in FOV angle
+            {
+                float distanceToPlayer = Vector2.Distance(this.transform.position, playerCollider.transform.position);
+                
+                // isAlert = true if Player not obstructed from view
+                // Draw ray from Enemy to Player, detect if any collisions (exclude Player layer 8)
+                if (Physics2D.Raycast(this.transform.position, directionToPlayer, distanceToPlayer, ~layerMask))
+                {
+                    isAlert = true;
+                }
+            }
+        }
+        // TODO: Detect when Player's Flashlight within FOV?
         // TODO: Detect when Player's Bullet within FOV
     }
 
     private void EnemyHearing()
     {
         // Detects Player within small radius
+        float distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
         isAlert = isAlert || (distanceFromPlayer < hearingRadius);
         // TODO: detect when Player is moving (running?) in this radius - allow sneaking
         // TODO: detect when Player interacts with objects in this radius

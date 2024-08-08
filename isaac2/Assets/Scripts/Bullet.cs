@@ -34,10 +34,14 @@ public class Bullet : MonoBehaviour
     // bullet is trigger collider, damages enemy when hit
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        // on spawn, Bullet collides with Player - want to ignore this
+        if (!collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<Health>().Damage(); // HP - 1
+            if (collision.gameObject.CompareTag("Enemy"))
+            {
+                collision.gameObject.GetComponent<Health>().Damage(); // HP - 1
+            }
+            Destroy(gameObject);  // destroy bullet after collision
         }
-        Destroy(gameObject);  // destroy bullet after collision
     }
 }
