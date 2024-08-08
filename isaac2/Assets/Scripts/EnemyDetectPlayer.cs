@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class EnemyDetectPlayer : MonoBehaviour
 {
@@ -18,43 +20,73 @@ public class EnemyDetectPlayer : MonoBehaviour
     ///     - Enemy never forgets after detecting Player
     /// </summary>
     
-    private float distance;
+    private float distanceFromPlayer;
     private GameObject player;
     
     [SerializeField] private bool isAlert;
     
-    [SerializeField] private float hearingRadius;  // possibly unnecessary - hearingRadius = 0
-    private bool canHear;
+    [SerializeField] private float hearingRadius;
     [SerializeField] private float sightRadius;
-    private bool canSee;  // possibly unnecessary - sightRadius = 0
+    [SerializeField] private float sightAngle;
     private bool canDetectOnAttack;
 
     
     // Start is called before the first frame update
     void Start()
     {
+        // Initialize variables
         player = GameObject.FindGameObjectWithTag("Player");
         isAlert = false;  // unless some enemies are always Alert?
+
+        // Start detection coroutine
+        StartCoroutine(AlertCheck());
     }
 
     // Update is called once per frame
-    void Update()
+    // void Update()
+    // {
+    //      distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
+    //      isAlert = isAlert || (distanceFromPlayer < hearingRadius);
+    // }
+
+    private IEnumerator AlertCheck()
     {
-        distance = Vector2.Distance(transform.position, player.transform.position);
-        
-        isAlert = isAlert || (distance < hearingRadius);
-        // TODO: Implement realistic angular line of sight
-        // TODO: Factor in obstacles blocking line of sight
-        // TODO: Consider blind enemies?
+        WaitForSeconds wait = new WaitForSeconds(0.2f);
+
+        while (!isAlert)
+        {
+            yield return wait;
+            distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
+            if (sightRadius >= 0)  // not blind
+            {
+                EnemyVision();
+            }
+            if (hearingRadius >= 0 && !isAlert)  // not deaf, not detected via vision
+            {
+                EnemyHearing();
+            }
+        }
     }
 
+    private void EnemyVision()
+    {
+        // TODO: Create FOV cone
+        // TODO: Detect when Player within FOV
+        // TODO: Detect when Player's Flashlight within FOV
+        // TODO: Detect when Player's Bullet within FOV
+    }
+
+    private void EnemyHearing()
+    {
+        // Detects Player within small radius
+        isAlert = isAlert || (distanceFromPlayer < hearingRadius);
+        // TODO: detect when Player is moving (running?) in this radius - allow sneaking
+        // TODO: detect when Player interacts with objects in this radius
+        // TODO: detect when Player shoots Bullet in this radius
+    }
 
     // TODO: Collision detection, if bullet collides with Enemy, set to Alert
     //      - "dumb" Enemy may not be Alert on attack if can't see Player
-    // TODO: Light detection, if flashlight shone at Enemy, set to Alert
-    // TODO: "sound" detection, if Player interacts with objects, set Enemies in radius to Alert
-    //      - Would a 360 hearing radius make sense as well, such as for blind enemies?
-    //      - Consider deaf enemies?
 
 
     /// <summary>
