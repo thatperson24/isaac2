@@ -9,16 +9,17 @@ public class EnemyDetectPlayer : MonoBehaviour
 {
     /// <summary>
     /// Enemy detects if Player is nearby based on Hearing and Sight.
-    /// Within a set hearing radius, Enemy can "hear" when:
-    ///     - Player enters
-    ///     - TODO: Player moves fast?
-    ///     - TODO: Player interacts with an object
-    ///     - TODO: Player shoots a Bullet
+    /// Within a set hearing radius, Enemy can "hear":
+    ///     - Player simply existing
+    ///     - TODO: Player moving fast/loudly?
+    ///     - TODO: Player interacting with an object
+    ///     - TODO: Player shooting a Bullet
     /// Within a set sight radius & angle, Enemy can "see":
-    ///     - TODO: Player
+    ///     - Player
+    ///     - Player Bullet
     ///     - TODO: Player flashlight cast
-    ///     - TODO: Player Bullet
     /// Enemy can be deaf or blind.
+    /// Once Enemy is Alert / detects Player, will always stay Alert.
     /// </summary>
     
     private GameObject player;
@@ -29,7 +30,6 @@ public class EnemyDetectPlayer : MonoBehaviour
     [SerializeField] private int hearingRadius;
     [SerializeField] private int sightRadius;
     [SerializeField] private float sightAngle;
-    private bool canDetectOnAttack;
 
     
     // Start is called before the first frame update
@@ -76,34 +76,42 @@ public class EnemyDetectPlayer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///     Determines if Enemy can see Player (or Bullet).
+    ///     Draws sector-shaped FOV with the set angle and radius,
+    ///     and detects if Player is within that FOV but not obscured.
+    /// </summary>
     private void EnemySight()
     {
         int playerLayer = 8;
         int layerMask = 1 << playerLayer;
-        // TODO: Create FOV cone
         Collider2D[] FOV = Physics2D.OverlapCircleAll(this.transform.position, sightRadius, layerMask);  // draw radius on Player layer (8)
 
-        if(FOV.Length > 0)  // if any entity (Player) detected in radius
+        if(FOV.Length > 0)  // if any entity (Player or Bullet) detected in radius
         {
             Collider2D playerCollider = FOV[0];
             Vector2 directionToPlayer = (playerCollider.transform.position - this.transform.position).normalized;
 
-            if (Vector2.Angle(this.transform.right, directionToPlayer) < sightAngle * 0.5)  // if Player in FOV angle
+            if (Vector2.Angle(this.transform.right, directionToPlayer) < sightAngle * 0.5)  // if Player/Bullet in FOV angle
             {
                 float distanceToPlayer = Vector2.Distance(this.transform.position, playerCollider.transform.position);
                 
-                // isAlert = true if Player not obstructed from view
-                // Draw ray from Enemy to Player, detect if any collisions (exclude Player layer 8)
+                // isAlert = true if Player/Bullet not obstructed from view
+                // Draw ray from Enemy to Player/Bullet, detect if any collisions (exclude Player layer 8)
                 if (Physics2D.Raycast(this.transform.position, directionToPlayer, distanceToPlayer, ~layerMask))
                 {
                     isAlert = true;
                 }
             }
         }
-        // TODO: Detect when Player's Flashlight within FOV?
-        // TODO: Detect when Player's Bullet within FOV
+        // TODO: Detect when Player's Flashlight cast within FOV?
     }
 
+    /// <summary>
+    ///     Determines if Enemy can "hear" Player.
+    ///     Currently just detects if Player within hearing radius.
+    ///     Ideally would detect Player actions that make noise within that radius.
+    /// </summary>
     private void EnemyHearing()
     {
         // Detects Player within small radius
@@ -113,10 +121,6 @@ public class EnemyDetectPlayer : MonoBehaviour
         // TODO: detect when Player interacts with objects in this radius
         // TODO: detect when Player shoots Bullet in this radius
     }
-
-    // TODO: Collision detection, if bullet collides with Enemy, set to Alert
-    //      - "dumb" Enemy may not be Alert on attack if can't see Player
-
 
     /// <summary>
     ///     Return whether or not the current enemy is Alert
