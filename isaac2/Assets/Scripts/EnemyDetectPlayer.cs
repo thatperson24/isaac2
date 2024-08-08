@@ -24,9 +24,10 @@ public class EnemyDetectPlayer : MonoBehaviour
     private GameObject player;
     
     [SerializeField] private bool isAlert;
+    private bool isDead;
     
-    [SerializeField] private float hearingRadius;
-    [SerializeField] private float sightRadius;
+    [SerializeField] private int hearingRadius;
+    [SerializeField] private int sightRadius;
     [SerializeField] private float sightAngle;
     private bool canDetectOnAttack;
 
@@ -36,35 +37,42 @@ public class EnemyDetectPlayer : MonoBehaviour
     {
         // Initialize variables
         player = GameObject.FindGameObjectWithTag("Player");
-        isAlert = false;  // unless some enemies are always Alert?
+        isAlert = false;  // unless some Enemies are always Alert?
 
         // Start detection coroutine
         StartCoroutine(AlertCheck());
     }
 
     // Update is called once per frame
-    // void Update()
-    // {
-    //      distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
-    //      isAlert = isAlert || (distanceFromPlayer < hearingRadius);
-    // }
+    void Update()
+    {
+        isDead = this.GetComponent<Health>().GetIsDead();
+    }
 
+    /// <summary>
+    ///     While Enemy is not Alert, attempt to detect Player
+    ///     via hearing and vision every 0.2 seconds.
+    ///     Stops when Enemy is Alerted.
+    ///     NOTE: Enemy currently cannot be un-Alerted.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator AlertCheck()
     {
         WaitForSeconds wait = new WaitForSeconds(0.2f);
 
-        while (!isAlert)
+        while (!isAlert && !isDead)
         {
             yield return wait;
             distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
-            if (sightRadius >= 0)  // not blind
-            {
-                EnemyVision();
-            }
-            if (hearingRadius >= 0 && !isAlert)  // not deaf, not detected via vision
+            if (hearingRadius >= 0)  // not deaf
             {
                 EnemyHearing();
             }
+            if (sightRadius >= 0 && !isAlert)  // not blind, not detected via hearing
+            {
+                EnemyVision();
+            }
+            
         }
     }
 
@@ -118,4 +126,64 @@ public class EnemyDetectPlayer : MonoBehaviour
     {
         SetIsAlert(true);
     }
+
+    /// <summary>
+    ///     Returns the max distance that an Enemy can hear the Player from.
+    /// </summary>
+    /// <returns>hearingRadius</returns>
+    public int GetHearingRadius()
+    {
+        return hearingRadius;
+    }
+
+    /// <summary>
+    ///     Sets the max distance that an Enemy can hear the Player from
+    ///     to a new given value.
+    /// </summary>
+    /// <param name="newHearingRadius"></param>
+    public void SetHearingRadius(int newHearingRadius)
+    {
+        hearingRadius = newHearingRadius;
+    }
+
+    /// <summary>
+    ///     Returns the max distance that an Enemy can see the Player from.
+    /// </summary>
+    /// <returns>sightRadius</returns>
+    public int GetSightRadius()
+    {
+        return sightRadius;
+    }
+
+    /// <summary>
+    ///     Sets the max distance that an Enemy can see the Player from
+    ///     to a new given value.
+    /// </summary>
+    /// <param name="newSightRadius"></param>
+    public void SetSightRadius(int newSightRadius)
+    {
+        sightRadius = newSightRadius;
+    }
+
+    /// <summary>
+    ///     Returns the angle of the Enemy's field of view.
+    /// </summary>
+    /// <returns></returns>
+    public float GetSightAngle()
+    {
+        return sightAngle;
+    }
+
+    /// <summary>
+    ///     Sets the angle of the Enemy's field of view
+    ///     to a new given value.
+    /// </summary>
+    /// <param name="newSightAngle"></param>
+    public void SetSightAngle(float newSightAngle)
+    {
+        sightAngle = newSightAngle;
+    }
+    
+
+
 }
