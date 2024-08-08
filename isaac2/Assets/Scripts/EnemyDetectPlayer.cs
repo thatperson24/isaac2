@@ -58,6 +58,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// <returns></returns>
     private IEnumerator AlertCheck()
     {
+        // is this the right way to do this?? I genuinely do not know
         WaitForSeconds wait = new WaitForSeconds(0.2f);
 
         while (!isAlert && !isDead)
