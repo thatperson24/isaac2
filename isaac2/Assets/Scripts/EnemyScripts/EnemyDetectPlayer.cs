@@ -23,7 +23,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// </summary>
     
     private GameObject player;
-    private int playerLayer = 8;
+    private const int playerLayer = 8;
     
     [SerializeField] private bool isAlert;
     private bool isDead;
@@ -60,7 +60,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     private IEnumerator AlertCheck()
     {
         // is this the right way to do this?? I genuinely do not know
-        WaitForSeconds wait = new WaitForSeconds(0.2f);
+        WaitForSeconds wait = new(0.2f);
 
         while (!isAlert && !isDead)
         {
@@ -146,7 +146,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     {
         if (sightAngle != 0 && sightRadius >= 0)  // don't do if blind
         {
-            Vector3 start = new Vector3(
+            Vector3 start = new(
                 Mathf.Sin(((sightAngle * 0.5f) - transform.eulerAngles.z) * Mathf.Deg2Rad),
                 Mathf.Cos(((sightAngle * 0.5f) - transform.eulerAngles.z) * Mathf.Deg2Rad));
 
