@@ -13,6 +13,14 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1696153043667194091, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: _sightAngle
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1696153043667194091, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: _sightRadius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1696153043667194091, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
       propertyPath: hearingRadius
       value: 3
       objectReference: {fileID: 0}

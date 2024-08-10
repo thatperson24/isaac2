@@ -42,7 +42,7 @@ public class EnemyPursue : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         curSpeed = baseSpeed;
-        isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert(); 
+        isAlert = this.GetComponent<EnemyDetectPlayer>().IsAlert; 
     }
 
     // Update is called once per frame
@@ -51,7 +51,7 @@ public class EnemyPursue : MonoBehaviour
         if (!this.GetComponent<EnemyHealth>().GetIsDead()) {  // Stop updates if Enemy is dead
             distance = Vector2.Distance(transform.position, player.transform.position);
 
-            isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert();
+            isAlert = this.GetComponent<EnemyDetectPlayer>().IsAlert;
             if (isAlert && distance > maxFollowDistance)
             {
                 transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, curSpeed * Time.deltaTime);

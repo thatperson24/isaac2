@@ -12,46 +12,63 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// Enemy detects if Player is nearby based on Hearing and Sight.
     /// Within a set hearing radius, Enemy can "hear":
     ///     - Player simply existing
-    ///     - TODO: Player moving fast/loudly?
-    ///     - TODO: Player interacting with an object
-    ///     - TODO: Player shooting a Bullet
-    ///     - TODO: Another Enemy is attacking Player
+    ///     - TODO: Player moving fast/loudly? (Need: Player movement variation)
+    ///     - TODO: Player interacting with an object (Need: Items/Player interactions)
+    ///     - TODO: Player shooting a Bullet (*Next iteration of Alert AI)
+    ///     - TODO: Another Enemy is attacking Player (Need: Enemy attacks)
     /// Within a set sight radius & angle, Enemy can "see":
     ///     - Player
     ///     - Player Bullet
-    ///     - TODO: Player flashlight cast
-    ///     - TODO: Another Enemy that is Alert
+    ///     - TODO: Player flashlight cast (*Next iteration of Alert AI)
+    ///     - TODO: Another Enemy that is Alert (*Next iteration of Alert AI)
     /// TODO: Enemy "touch":
-    ///     - TODO: Enemy is Alert when Player touches Enemy
-    ///     - TODO: Enemy is Alert when Player shoots/damages Enemy
+    ///     - TODO: Enemy is Alert when Player touches Enemy (*Next iteration of Alert AI)
+    ///     - TODO: Enemy is Alert when Player shoots/damages Enemy (*Next iteration of Alert AI)
     /// Enemy can be deaf or blind.
     /// Once Enemy is Alert / detects Player, will always stay Alert.
     /// </summary>
+    private const int PlayerLayer = 8;
+    // private const int EnemyLayer = 9;
+    private const float MaxHearingRadius = 10;
+    private const float MaxSightRadius = 10;
     
-    private GameObject player;
-    private const int playerLayer = 8;
-    private const int enemyLayer = 9;
-    private const float maxHearingRadius = 10;
-    private const float maxSightRadius = 10;
-    
-    [SerializeField] private bool isAlert;
+    private GameObject player;  // static?
     private bool isDead;
-    
-    [Range(0,maxHearingRadius)] [SerializeField] private float hearingRadius;
-    [Range(0,maxSightRadius)] [SerializeField] private float sightRadius;
-    [Range(0,365)] [SerializeField] private float sightAngle;
 
-    
+    // Properties
+    [field: SerializeField] public bool IsAlert { get; private set; }
+    // Max distance that an Enemy can "hear" the Player from.
+    [Range(0, MaxHearingRadius)] [SerializeField] private float _hearingRadius;
+    public float HearingRadius
+    {
+        get => this._hearingRadius;
+        private set => this._hearingRadius = Math.Clamp(value, 0, MaxHearingRadius);
+    }
+    // Max distance that an Enemy can "see" the Player from
+    [Range(0, MaxSightRadius)] [SerializeField] private float _sightRadius;
+    public float SightRadius
+    {
+        get => this._sightRadius;
+        private set => this._sightRadius = Math.Clamp(value, 0, MaxSightRadius);
+    }
+    // Angle of Enemy FOV
+    [Range(0, 360)] [SerializeField] private float _sightAngle;
+    public float SightAngle
+    {
+        get => this._sightAngle;
+        private set => this._sightAngle = Math.Clamp(value, 0, 360);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         // Initialize variables
         player = GameObject.FindGameObjectWithTag("Player");
-        isAlert = false;
         isDead = false;
-        hearingRadius = Math.Clamp(hearingRadius, 0, maxHearingRadius);
-        sightRadius = Math.Clamp(sightRadius, 0, maxSightRadius);
-        sightAngle = Math.Clamp(sightAngle, 0, 365);
+        this.IsAlert = false;
+        this.HearingRadius = Math.Clamp(this.HearingRadius, 0, MaxHearingRadius);
+        this.SightRadius = Math.Clamp(this.SightRadius, 0, MaxSightRadius);
+        this.SightAngle = Math.Clamp(this.SightAngle, 0, 365);
 
         // Start detection coroutine
         StartCoroutine(AlertCheck());
@@ -74,18 +91,17 @@ public class EnemyDetectPlayer : MonoBehaviour
     {
         WaitForSeconds wait = new(0.2f);
 
-        while (!isAlert && !isDead)
+        while (!this.IsAlert && !isDead)
         {
             yield return wait;
-            if (hearingRadius >= 0)  // Not deaf
+            if (!this.IsDeaf())
             {
                 EnemyHearing();
             }
-            if (sightRadius >= 0 && !isAlert)  // Not blind, not detected via hearing
+            if (!this.IsBlind() && !this.IsAlert)
             {
                 EnemySight();
             }
-            
         }
     }
 
@@ -98,7 +114,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     {
         // Detects Player within radius
         float distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
-        isAlert = isAlert || (distanceFromPlayer < hearingRadius);
+        this.IsAlert = this.IsAlert || (distanceFromPlayer < this.HearingRadius);
 
         // TODO: detect when Player is moving (running?) in this radius - allow sneaking
         // TODO: detect when Player interacts with objects in this radius
@@ -119,10 +135,10 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// </summary>
     private void EnemySight()
     {
-        int layerMask = (1 << playerLayer);  // Searching only in Player layer
+        int layerMask = 1 << PlayerLayer;  // Searching only in Player layer
         //int layerMask = (1 << playerLayer)|(1 << enemyLayer);  // Searching only in Player & Enemy layers
 
-        Collider2D[] FOVCollisions = Physics2D.OverlapCircleAll(this.transform.position, sightRadius, layerMask);  // Draw circle on Player layer
+        Collider2D[] FOVCollisions = Physics2D.OverlapCircleAll(this.transform.position, this.SightRadius, layerMask);  // Draw circle on Player layer
 
         foreach (var collider in FOVCollisions)
         {
@@ -131,7 +147,7 @@ public class EnemyDetectPlayer : MonoBehaviour
             //    (!collider.gameObject.CompareTag("Enemy")))  // If collider belongs to Alert Enemy or any non-Enemy (Player, Bullet)
             
             Vector2 targetDirection = (collider.transform.position - this.transform.position).normalized;
-            if (Vector2.Angle(this.transform.up, targetDirection) < sightAngle * 0.5)  // If target in FOV angle
+            if (Vector2.Angle(this.transform.up, targetDirection) < this.SightAngle * 0.5)  // If target in FOV angle
             {
                 float distanceFromTarget = Vector2.Distance(this.transform.position, collider.transform.position);
                 
@@ -159,7 +175,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// </summary>
     private void OnDrawGizmos()
     {
-        if (!isAlert)  // Draw Enemy FOV when still Idle
+        if (!this.IsAlert)  // Draw Enemy FOV when still Idle
         {
             DrawSightGizmo();
             DrawHearingGizmo();
@@ -172,14 +188,14 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// </summary>
     private void DrawSightGizmo()
     {
-        if (sightAngle != 0 && sightRadius >= 0)  // Don't do if blind
+        if (!this.IsBlind())
         {
             Vector3 start = new(
-                Mathf.Sin(((sightAngle * 0.5f) - transform.eulerAngles.z) * Mathf.Deg2Rad),
-                Mathf.Cos(((sightAngle * 0.5f) - transform.eulerAngles.z) * Mathf.Deg2Rad));
+                Mathf.Sin(((this.SightAngle * 0.5f) - this.transform.eulerAngles.z) * Mathf.Deg2Rad),
+                Mathf.Cos(((this.SightAngle * 0.5f) - this.transform.eulerAngles.z) * Mathf.Deg2Rad));
 
             Handles.color = new Color(255, 0, 0, 0.03f);
-            Handles.DrawSolidArc(transform.position, Vector3.forward, start, sightAngle, sightRadius);
+            Handles.DrawSolidArc(this.transform.position, Vector3.forward, start, this.SightAngle, this.SightRadius);
         }
     }
 
@@ -189,40 +205,11 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// </summary>
     private void DrawHearingGizmo()
     {
-        if (hearingRadius >= 0)  // Don't do if deaf
+        if (!this.IsDeaf())
         {
             Handles.color = Color.yellow;
-            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, hearingRadius);
+            UnityEditor.Handles.DrawWireDisc(this.transform.position, Vector3.forward, this.HearingRadius);
         }
-    }
-
-    // ***************************************
-    // I have no previous C# experience
-    // I just learned about Properties ...
-    // Should I do that instead???
-    // I think the answer is yes??
-    // ***************************************
-
-
-    /// <summary>
-    ///     Return whether or not the current enemy is Alert
-    ///     (i.e., aware of player and actively pursuing).
-    /// </summary>
-    /// <returns>isAlert</returns>
-    public bool GetIsAlert()
-    {
-        return isAlert;
-    }
-
-    /// <summary>
-    ///     Set "isAlert" bool to given new value.
-    ///     Private for now but depending on how we want to
-    ///     use this, could be made public.
-    /// </summary>
-    /// <param name="newIsAlert"></param>
-    private void SetIsAlert(bool newIsAlert)
-    {
-        isAlert = newIsAlert;
     }
 
     /// <summary>
@@ -231,66 +218,26 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// </summary>
     public void AlertEnemy()
     {
-        SetIsAlert(true);
+        this.IsAlert = true;
     }
 
     /// <summary>
-    ///     Returns the max distance that an Enemy can hear the Player from.
-    /// </summary>
-    /// <returns>hearingRadius</returns>
-    public float GetHearingRadius()
-    {
-        return hearingRadius;
-    }
-
-    /// <summary>
-    ///     Sets the max distance that an Enemy can hear the Player from
-    ///     to a new given value.
-    ///     Asserts greater than 0 and less than maxHearingRadius.
-    /// </summary>
-    /// <param name="newHearingRadius"></param>
-    public void SetHearingRadius(int newHearingRadius)
-    {
-        hearingRadius = Math.Clamp(newHearingRadius, 0, maxHearingRadius);
-    }
-
-    /// <summary>
-    ///     Returns the max distance that an Enemy can see the Player from.
-    /// </summary>
-    /// <returns>sightRadius</returns>
-    public float GetSightRadius()
-    {
-        return sightRadius;
-    }
-
-    /// <summary>
-    ///     Sets the max distance that an Enemy can see the Player from
-    ///     to a new given value.
-    ///     Asserts greater than 0 and less than maxSightRadius.
-    /// </summary>
-    /// <param name="newSightRadius"></param>
-    public void SetSightRadius(int newSightRadius)
-    {
-        sightRadius = Math.Clamp(newSightRadius, 0, maxSightRadius);
-    }
-
-    /// <summary>
-    ///     Returns the angle of the Enemy's field of view.
+    ///     Returns whether or not an Enemy is blind,
+    ///     i.e., sight radius and/or angle is 0.
     /// </summary>
     /// <returns></returns>
-    public float GetSightAngle()
+    public bool IsBlind()
     {
-        return sightAngle;
+        return (this.SightRadius <= 0) || (this.SightAngle <= 0);
     }
 
     /// <summary>
-    ///     Sets the angle of the Enemy's field of view
-    ///     to a new given value.
-    ///     Asserts within range [0, 365].
+    ///     Returns whether or not an Enemy is deaf,
+    ///     i.e., hearing radius is 0.
     /// </summary>
-    /// <param name="newSightAngle"></param>
-    public void SetSightAngle(float newSightAngle)
+    /// <returns></returns>
+    public bool IsDeaf()
     {
-        sightAngle = Math.Clamp(newSightAngle, 0, 365);
+        return this.HearingRadius <= 0;
     }
 }

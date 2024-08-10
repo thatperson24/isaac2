@@ -173,10 +173,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9737276282a85b74ebf1295ec1ce7daa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAlert: 0
-  hearingRadius: 0
-  sightRadius: 5
-  sightAngle: 90
+  <IsAlert>k__BackingField: 0
+  _hearingRadius: 0
+  _sightRadius: 0
+  _sightAngle: 0
 --- !u!114 &-5983664817356884799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 434329ee232bb014c99da7a4ad8f5e6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 0
   curHealth: 0
   isDead: 0
 --- !u!114 &7698214876862720360

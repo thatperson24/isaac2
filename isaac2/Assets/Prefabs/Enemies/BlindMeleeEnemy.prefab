@@ -65,12 +65,24 @@ PrefabInstance:
       value: BlindMeleeEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 8243040262208347072, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: _sightAngle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243040262208347072, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: sightRadius
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243040262208347072, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: _sightRadius
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8243040262208347072, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: hearingRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243040262208347072, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: _hearingRadius
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

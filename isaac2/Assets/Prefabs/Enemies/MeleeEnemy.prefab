@@ -8,6 +8,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5983664817356884799, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: maxHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1696153043667194091, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: _sightAngle
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1696153043667194091, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: _sightRadius
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1696153043667194091, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
       propertyPath: hearingRadius
       value: 0
