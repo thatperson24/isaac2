@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1696153043667194091}
   - component: {fileID: -5983664817356884799}
   - component: {fileID: 7698214876862720360}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BaseEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAlert: 0
-  hearingRadius: 5
+  hearingRadius: 0
   sightRadius: 5
   sightAngle: 90
 --- !u!114 &-5983664817356884799
