@@ -48,7 +48,7 @@ public class EnemyPursue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!this.GetComponent<Health>().GetIsDead()) {  // Stop updates if Enemy is dead
+        if (!this.GetComponent<EnemyHealth>().GetIsDead()) {  // Stop updates if Enemy is dead
             distance = Vector2.Distance(transform.position, player.transform.position);
 
             isAlert = this.GetComponent<EnemyDetectPlayer>().GetIsAlert();
