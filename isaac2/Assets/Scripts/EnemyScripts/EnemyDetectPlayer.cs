@@ -9,7 +9,7 @@ using UnityEngine.Animations;
 public class EnemyDetectPlayer : MonoBehaviour
 {
     /// <summary>
-    /// Enemy detects if Player is nearby based on Hearing and Sight.
+    /// Enemy detects if Player is nearby based on Hearing, Sight, and Touch.
     /// Within a set hearing radius, Enemy can "hear":
     ///     - Player simply existing
     ///     - TODO: Player moving fast/loudly? (Need: Player movement variation)
@@ -21,9 +21,9 @@ public class EnemyDetectPlayer : MonoBehaviour
     ///     - Player Bullet
     ///     - TODO: Player flashlight cast (*Next iteration of Alert AI)
     ///     - TODO: Another Enemy that is Alert (*Next iteration of Alert AI)
-    /// TODO: Enemy "touch":
-    ///     - TODO: Enemy is Alert when Player touches Enemy (*Next iteration of Alert AI)
-    ///     - TODO: Enemy is Alert when Player shoots/damages Enemy (*Next iteration of Alert AI)
+    /// Enemy can sense Player using "touch" when:
+    ///     - Player touches Enemy
+    ///     - Player shoots Enemy (This is done by Bullet class)
     /// Enemy can be deaf or blind.
     /// Once Enemy is Alert / detects Player, will always stay Alert.
     /// </summary>
@@ -120,6 +120,14 @@ public class EnemyDetectPlayer : MonoBehaviour
         // TODO: detect when Player interacts with objects in this radius
         // TODO: detect when Player shoots Bullet in this radius
         // TODO: detect when other Enemy attacks Player in this radius
+
+        // Need to figure out how I want to use Player actions to Alert Enemies that have different levels of hearing
+        // I set a max hearing radius so I could maybe draw a circle around Player with max hearing radius
+        // Then check each Enemy in range's hearing radius to see if they can hear it??
+        // Worried that this is too much though
+        // I could also set fields on Player that signal for example that a shot has been fired recently
+        // Then Enemy checks for Player in radius that has that value set to true?
+        // Idk............
     }
 
     /// <summary>
@@ -132,6 +140,8 @@ public class EnemyDetectPlayer : MonoBehaviour
     ///     I tried to allow for Enemy to also detect other Alert Enemy.
     ///     This doesn't work for now because Enemy was detecting itself (even though itself is not Alert).
     ///     Either would need to draw collider around Enemy or give each Enemy unique tag? I think?
+    ///     
+    ///     I also tried to add a collider to the flashlight but failed...
     /// </summary>
     private void EnemySight()
     {
@@ -161,13 +171,23 @@ public class EnemyDetectPlayer : MonoBehaviour
             }
         }
         // TODO: Detect when Player's Flashlight cast within FOV?
+        // I tried to do this by simply adding a custom collider to the Spot Light 2D game object
+        // and ensuring it was on the Player layer but nothing happened
+        // Need to think about this some more
     }
 
-
-
-    // TODO: Detect when Player damages Enemy
-    // TODO: Detect when Player touches Enemy (like from behind)
-
+    /// <summary>
+    ///     Detects any collision with Enemy, and
+    ///     Alerts Enemy if Player touches Enemy.
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!this.IsAlert && collision.gameObject.CompareTag("Player"))
+        {
+            AlertEnemy();
+        }
+    }
 
     /// <summary>
     ///     Draws FOV and hearing visualizions around Enemy in Scene Editor.
@@ -224,6 +244,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// <summary>
     ///     Returns whether or not an Enemy is blind,
     ///     i.e., sight radius and/or angle is 0.
+    ///     Can this also be a Property?
     /// </summary>
     /// <returns></returns>
     public bool IsBlind()
@@ -234,6 +255,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// <summary>
     ///     Returns whether or not an Enemy is deaf,
     ///     i.e., hearing radius is 0.
+    ///     Can this also be a Property?
     /// </summary>
     /// <returns></returns>
     public bool IsDeaf()
