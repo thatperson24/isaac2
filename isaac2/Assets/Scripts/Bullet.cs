@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour
             if (collision.gameObject.CompareTag("Enemy"))
             {
                 collision.gameObject.GetComponent<EnemyHealth>().Damage(); // HP - 1
-                collision.gameObject.GetComponent<EnemyDetectPlayer>().AlertEnemy();
+                collision.gameObject.GetComponent<EnemyDetectPlayer>().EnemyAttacked();
             }
             Destroy(gameObject);  // Destroy Bullet after collision
         }

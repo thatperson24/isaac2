@@ -58,6 +58,11 @@ public class EnemyDetectPlayer : MonoBehaviour
         get => this._sightAngle;
         private set => this._sightAngle = Math.Clamp(value, 0, 360);
     }
+    // Whether or not Enemy can detect Player location when shot/attacked
+    [field: SerializeField] public bool CanDetectOnAttack{ get; private set; }
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -261,5 +266,18 @@ public class EnemyDetectPlayer : MonoBehaviour
     public bool IsDeaf()
     {
         return this.HearingRadius <= 0;
+    }
+
+    /// <summary>
+    ///     When Bullet hits Enemy, calls this method,
+    ///     which Alerts Enemy if possible.
+    ///     Enemy can be set to not CanDetectOnAttack.
+    /// </summary>
+    public void EnemyAttacked()
+    {
+        if (!this.IsAlert && this.CanDetectOnAttack)
+        {
+            AlertEnemy();
+        }
     }
 }
