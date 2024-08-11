@@ -11,19 +11,19 @@ public class EnemyDetectPlayer : MonoBehaviour
     /// <summary>
     /// Enemy detects if Player is nearby based on Hearing, Sight, and Touch.
     /// Within a set hearing radius, Enemy can "hear":
-    ///     - Player simply existing
-    ///     - TODO: Player moving fast/loudly? (Need: Player movement variation)
-    ///     - TODO: Player interacting with an object (Need: Items/Player interactions)
-    ///     - TODO: Player shooting a Bullet (*Next iteration of Alert AI)
-    ///     - TODO: Another Enemy is attacking Player (Need: Enemy attacks)
+    ///     + Player simply existing
+    ///     - TODO: Player shooting a Bullet (Need to figure out how to do this)
+    ///     - TODO: Player moving fast/loudly? (Need Player movement variation)
+    ///     - TODO: Player interacting with an object (Need Items/Player interactions)
+    ///     - TODO: Another Enemy is attacking Player (Need Enemy attacks)
     /// Within a set sight radius & angle, Enemy can "see":
-    ///     - Player
-    ///     - Player Bullet
-    ///     - TODO: Player flashlight cast (*Next iteration of Alert AI)
-    ///     - TODO: Another Enemy that is Alert (*Next iteration of Alert AI)
+    ///     + Player
+    ///     + Player Bullet
+    ///     - TODO: Player flashlight cast (Need to figure out how to do this)
+    ///     - TODO: Another Enemy that is Alert (Need to figure out how to do this)
     /// Enemy can sense Player using "touch" when:
-    ///     - Player touches Enemy
-    ///     - Player shoots Enemy (This is done by Bullet class)
+    ///     + Player touches Enemy
+    ///     + Player shoots Enemy (Bullet class initiates)
     /// Enemy can be deaf or blind.
     /// Once Enemy is Alert / detects Player, will always stay Alert.
     /// </summary>

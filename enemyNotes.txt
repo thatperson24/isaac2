@@ -12,19 +12,23 @@ Enemy Attributes & AI
 	- Patrolling/pacing
 		- Generated paths
 - Player Detection/Activate Alert State
-	- When Enemy sees Player
+	- Enemy Sight
 		+ When Player enters Enemy field of vision
-		+ When Player-spawned bullet enters Enemy field of vision?
+		+ When Player-spawned Bullet enters Enemy field of vision
 		+ Blind Enemies
 		- When Player flashlight cast enters Enemy field of vision
-	- When Enemy hears Player
+		- When other Alert Enemy enters field of vision
+	- Enemy Hearing
 		+ When Player enters range (temporary)
-		- When Player moves noisily within range
-		- When Player interacts with an object witin range
+		+ Deaf Enemies
 		- When Player shoots within range
-	- When Player attacks
-		- When Player hits Enemy with bullet
-			- "Dumb" Enemy may not be able to tell where Player is based on this alone
+		- When Player moves noisily within range
+		- When Player interacts with an object within range
+		- When other Enemy attacks Player within range
+	+ Enemy Touch
+		+ When Player touches Enemy
+		+ When Player hits Enemy with bullet
+			+ "Dumb" Enemy may not be able to tell where Player is based on this alone
 	+ Enemy never forgets after detecting Player
 - In Alert State
 	- Melee Enemy
