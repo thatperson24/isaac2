@@ -25,6 +25,11 @@ public class Room : MonoBehaviour
     [SerializeField] private LayerMask doorLayer;
     [SerializeField] private LayerMask wallLayer;
 
+    [Header("Enemies")]
+    [SerializeField] private List<GameObject> enemies;
+    [SerializeField] private int enemyBudget;
+    private int numEnemies;
+
     //On initalization
     void Awake()
     {
@@ -55,6 +60,8 @@ public class Room : MonoBehaviour
                 rightRoom.GetComponent<Room>().SetRoom("Left", this.gameObject);
             }
         }
+
+        ActivateDoors(); // Move script later when enemy spawning is implemented. Doors should only be activated when there are no enemies left.
     }
 
     /*The function sets an adjacent room as the new room
@@ -170,6 +177,22 @@ public class Room : MonoBehaviour
         if (rightRoom == null) 
         {
             this.gameObject.transform.Find("Doors").Find("Right").gameObject.SetActive(false);
+        }
+    }
+
+    public int GetNumEnemies()
+    {
+        return numEnemies; 
+    }
+
+    public void ActivateDoors()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            if(this.transform.GetChild(1).GetChild(i).gameObject.GetComponent<Door>() != null)
+            {
+                this.transform.GetChild(1).GetChild(i).gameObject.GetComponent<Door>().SetDoorActive(true);
+            }
         }
     }
 }
