@@ -7,14 +7,18 @@ using UnityEngine;
 public abstract class Health : MonoBehaviour
 {
     /// <summary>
-    /// Health class stores entity health and deals with setting, incrementing,
-    /// and fetching both current and max health.
-    /// Also detects death and overheal.
-    /// In theory this was meant to be shared between Player and Enemy,
-    /// but I am not sure if that is a good idea or not.
+    ///     Health class stores Entity health and deals with setting, incrementing,
+    ///     and fetching both current and max health.
+    ///     Also detects death and overheal.
+    ///     Child must implement abstract Death() method.
+    ///     
+    ///     Other considerations:
+    ///     - Health bars
+    ///     - Dealing with inventory/loot on death
+    ///     - Shielding
+    ///     - Overheal
+    ///     - Death animations
     /// </summary>
-
-    // TODO: If we want health bars they could be handled here
 
     private const int MaxMaxHealth = 999;  // the max possible max health
 

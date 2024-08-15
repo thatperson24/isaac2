@@ -7,12 +7,13 @@ using UnityEngine;
 public class EnemyHealth : Health
 {
     /// <summary>
-    /// Health class stores entity health and deals with setting, incrementing,
-    /// and fetching both current and max health.
-    /// Also detects death and overheal.
-    /// In theory this was meant to be shared between Player and Enemy,
-    /// but I am not sure if that is a good idea or not.
-    /// </summary>
+    ///     Enemy implentation of Health abstract class, 
+    ///     which handles Entity max & cur health, damage,
+    ///     healing, death, etc.
+    ///     Implements Death() method, which handles Enemy death.
+    ///     Also handles corpse spawning, (future) death animation,
+    ///     and (future) loot dropping.
+    /// </summary> 
 
     /// <summary>
     ///     Initiate Enemy death process.
@@ -39,7 +40,8 @@ public class EnemyHealth : Health
         
         GameObject corpse = new(objectName + "Corpse");
         corpse.AddComponent<SpriteRenderer>();
-        corpse.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Enemies/" + objectName);  // eventually should be a specific dead sprite
+        corpse.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Enemies/" + objectName);
+        // eventually should be a specific dead sprite, maybe correct orientation as well
 
         corpse.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
     }
