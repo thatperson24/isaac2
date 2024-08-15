@@ -16,6 +16,14 @@ PrefabInstance:
       propertyPath: _maxHealth
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: -641412293530991340, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -641412293530991340, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1696153043667194091, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
       propertyPath: _sightAngle
       value: 90
@@ -73,8 +81,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5899680564508330335, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71f9e5e67d133f94c9d183e054907eef, type: 3}
+    - target: {fileID: 5899680564508330335, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5899680564508330335, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5899680564508330335, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6861672975685441882, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
       propertyPath: m_Name

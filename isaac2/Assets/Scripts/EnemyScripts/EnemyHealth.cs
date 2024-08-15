@@ -56,7 +56,7 @@ public class EnemyHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.CurHealth = this.MaxHealth;
+        this._curHealth = this.MaxHealth;  // have to bypass
     }
 
     // Update is called once per frame
@@ -145,12 +145,30 @@ public class EnemyHealth : MonoBehaviour
     /// <summary>
     ///     Initiate Enemy death process.
     /// </summary>
-    public void EnemyDeath()
+    private void EnemyDeath()
     {
         this.GetComponent<EnemyPursue>().SetCurSpeed(0);
-        // TODO: unalert/stop detecting player?
-        // TODO: remove entity
-        // TODO: replace entity with "corpse" entity with no AI (or collision?)
-
+        // TODO: death animation
+        SpawnCorpse();
+        Destroy(this.gameObject);  // , delay);  // delay by length of death animation
     }
+
+    /// <summary>
+    ///     Spawn an AI-less corpse entity with the correct
+    ///     sprite for this Enemy.
+    /// </summary>
+    private void SpawnCorpse()
+    {
+        String objectName = this.gameObject.name;
+        if (objectName[^7..].Equals("(Clone)"))
+        {
+            objectName = objectName[..^7];
+        }
+        
+        GameObject corpse = new(objectName + "Corpse");
+        corpse.AddComponent<SpriteRenderer>();
+        corpse.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Enemies/" + objectName);  // eventually should be a specific dead sprite
+
+        corpse.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
+    }   
 }
