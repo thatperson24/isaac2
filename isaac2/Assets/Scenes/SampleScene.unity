@@ -573,7 +573,7 @@ MonoBehaviour:
   rotationSpeed: 4
   cam: {fileID: 519420031}
   bulletPrefab: {fileID: 3986546034732378727, guid: c29f07cb9903142419096573349580e0, type: 3}
-  shootCD: 1
+  shootCD: 0.25
   maxAmmo: 16
   currentAmmo: 0
   reloadTime: 2

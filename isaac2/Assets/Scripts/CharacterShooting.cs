@@ -13,12 +13,15 @@ public class CharacterShooting : MonoBehaviour
     [SerializeField] private float shootCD;
     [SerializeField] private int maxAmmo;
     [SerializeField] private int currentAmmo;
+
     [SerializeField] private float reloadTime;
+    private bool isReloading;
     private bool canShoot;
 
     // Start is called before the first frame update
     void Start()
     {
+        isReloading = false;
         canShoot = true;
         currentAmmo = maxAmmo;
     }
@@ -28,14 +31,14 @@ public class CharacterShooting : MonoBehaviour
     {
 
         RotateGun();
-        if (canShoot && currentAmmo > 0)
+        if (!isReloading && canShoot && currentAmmo > 0)
         {
             if (Input.GetKey(KeyCode.Mouse0))
             {
                 StartCoroutine(shoot());
             }
         }
-        if (Input.GetKey(KeyCode.R))
+        if (!isReloading && Input.GetKey(KeyCode.R))
         {
             StartCoroutine(Reload());
         }
@@ -56,9 +59,11 @@ public class CharacterShooting : MonoBehaviour
 
     IEnumerator Reload()
     {
+        isReloading = true;
         canShoot = false;
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = maxAmmo;
+        isReloading = false;
         canShoot = true;
     }
 
