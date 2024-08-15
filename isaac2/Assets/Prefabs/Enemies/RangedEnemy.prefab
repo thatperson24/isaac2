@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: -5983664817356884799, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: _maxHealth
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 1696153043667194091, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
       propertyPath: _sightAngle
       value: 90

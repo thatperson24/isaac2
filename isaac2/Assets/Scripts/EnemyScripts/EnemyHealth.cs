@@ -16,14 +16,47 @@ public class EnemyHealth : MonoBehaviour
 
     // TODO: If we want health bars they could be handled here
 
-    [SerializeField] private int maxHealth;
-    [SerializeField] private int curHealth;
-    [SerializeField] private bool isDead;
+    private const int MaxMaxHealth = 999;  // the max possible max health
+
+
+    // Properties
+    [Range(1, MaxMaxHealth)] [SerializeField] private int _maxHealth;
+    public int MaxHealth
+    { 
+        get => this._maxHealth;
+        private set => Math.Max(1, value);
+    }
+    [SerializeField] private int _curHealth;
+    public int CurHealth
+    { 
+        get => this._curHealth;
+        private set 
+        {
+            if (this.IsDead())
+            {
+                return;  // prevent healing of dead entities
+            }
+            else if (value > this.MaxHealth) // OVERHEAL
+            {
+                this._curHealth = this.MaxHealth;
+                // TODO: overheal - could block use of heal item or convert heal to something else
+            }
+            else if (value <= 0) // DIED
+            {
+                this._curHealth = 0;
+                EnemyDeath();
+            }
+            else
+            {
+                this._curHealth = value;
+            }
+        }
+    }
     
     // Start is called before the first frame update
     void Start()
     {
-        curHealth = maxHealth;
+        this.CurHealth = this.MaxHealth;
     }
 
     // Update is called once per frame
@@ -33,61 +66,8 @@ public class EnemyHealth : MonoBehaviour
         // otherwise can we delete this method entirely (Unity question)
     //}
 
-    /// <summary>
-    ///     Returns current health of entity.
-    /// </summary>
-    /// <returns>curHealth</returns>
-    public int GetCurHealth()
-    {
-        return curHealth;
-    }
 
-    /// <summary>
-    ///     Returns current maxHealth of entity.
-    /// </summary>
-    /// <returns>maxHealth</returns>
-    public int GetMaxHealth()
-    {
-        return maxHealth;
-    }
 
-    /// <summary>
-    ///     Set current health to a new health value.
-    ///     Prevents health modification to already dead entities.
-    ///     Detects and prevents overheal.
-    ///     Detects death and prevents negative health.
-    ///     Resists attemps to heal/damage a dead entity.
-    ///     Returns new curHealth in case caller needs (detect death etc.).
-    /// </summary>
-    /// <param name="amount"></param>
-    /// <returns>curHealth</returns>
-    private int SetCurHealth(int newHealth) 
-    {
-        if (isDead || curHealth == 0) // ALREADY DEAD
-        {
-            return curHealth;  // prevent healing of dead entities
-        }
-        else if (newHealth > maxHealth) // OVERHEAL
-        {
-            curHealth = maxHealth;
-            // TODO: overheal - could block use of heal item or convert heal to something else
-        }
-        else if (newHealth <= 0) // YOU DIED
-        {
-            curHealth = 0;
-            EnemyDeath();
-            
-            // obviously death differs between players and enemies so might need to
-            // have separate health scripts for each to account for that?
-            // enemies - either despawn or just chill as a corpse
-            // player - uhhhhhhhhhhhhhhhh
-        }
-        else
-        {
-            curHealth = newHealth;
-        }
-        return curHealth;
-    }
 
     /// <summary>
     ///     Increment current health by given +/- delta amount.
@@ -100,7 +80,7 @@ public class EnemyHealth : MonoBehaviour
     /// <returns>health</returns>
     private int IncrementCurHealth(int delta = 1)
     {
-        return SetCurHealth(curHealth + delta);
+        return this.CurHealth += delta;
     }
 
     /// <summary>
@@ -137,22 +117,7 @@ public class EnemyHealth : MonoBehaviour
     /// <returns>health</returns>
     public int ResetHealth()
     {
-        return SetCurHealth(maxHealth);
-    }
-
-    /// <summary>
-    ///     Set max health to given amount.
-    ///     Could be used for powerups etc.
-    ///     Resists attempts to set maxHealth to 0 or less.
-    ///     Returns maxHealth in case caller needs.
-    /// </summary>
-    /// <param name="newMaxHealth"></param>
-    /// <returns>maxHealth</returns>
-    public int SetMaxHealth(int newMaxHealth) 
-    {
-        // TODO: Maybe put upper bounds on maxHealth
-        maxHealth = Math.Max(1, newMaxHealth);
-        return maxHealth;
+        return this.CurHealth = this.MaxHealth;
     }
 
     /// <summary>
@@ -165,16 +130,16 @@ public class EnemyHealth : MonoBehaviour
     /// <returns>maxHealth</returns>
     public int IncrementMaxHealth(int delta = 1) 
     {
-        return SetMaxHealth(maxHealth + delta);
+        return this.MaxHealth += delta;
     }
 
     /// <summary>
     ///     Return whether or not entity is dead.
     /// </summary>
     /// <returns>isDead</returns>
-    public bool GetIsDead()
+    public bool IsDead()
     {
-        return isDead;
+        return this.CurHealth <= 0;
     }
 
     /// <summary>
@@ -182,10 +147,10 @@ public class EnemyHealth : MonoBehaviour
     /// </summary>
     public void EnemyDeath()
     {
-        isDead = true;
         this.GetComponent<EnemyPursue>().SetCurSpeed(0);
         // TODO: unalert/stop detecting player?
         // TODO: remove entity
         // TODO: replace entity with "corpse" entity with no AI (or collision?)
+
     }
 }

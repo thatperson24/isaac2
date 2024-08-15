@@ -33,7 +33,6 @@ public class EnemyDetectPlayer : MonoBehaviour
     private const float MaxSightRadius = 10;
     
     private GameObject player;  // static?
-    private bool isDead;
 
     // Properties
     [field: SerializeField] public bool IsAlert { get; private set; }
@@ -69,7 +68,6 @@ public class EnemyDetectPlayer : MonoBehaviour
     {
         // Initialize variables
         player = GameObject.FindGameObjectWithTag("Player");
-        isDead = false;
         this.IsAlert = false;
         this.HearingRadius = Math.Clamp(this.HearingRadius, 0, MaxHearingRadius);
         this.SightRadius = Math.Clamp(this.SightRadius, 0, MaxSightRadius);
@@ -80,10 +78,9 @@ public class EnemyDetectPlayer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        isDead = this.GetComponent<EnemyHealth>().GetIsDead();
-    }
+    // void Update()
+    // {
+    // }
 
     /// <summary>
     ///     While Enemy is not Alert, attempt to detect Player
@@ -96,7 +93,7 @@ public class EnemyDetectPlayer : MonoBehaviour
     {
         WaitForSeconds wait = new(0.2f);
 
-        while (!this.IsAlert && !isDead)
+        while (!this.IsAlert && !this.GetComponent<EnemyHealth>().IsDead())
         {
             yield return wait;
             if (!this.IsDeaf())

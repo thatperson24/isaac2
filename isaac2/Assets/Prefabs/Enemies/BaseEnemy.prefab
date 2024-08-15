@@ -177,6 +177,7 @@ MonoBehaviour:
   _hearingRadius: 0
   _sightRadius: 0
   _sightAngle: 0
+  <CanDetectOnAttack>k__BackingField: 0
 --- !u!114 &-5983664817356884799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,9 +190,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 434329ee232bb014c99da7a4ad8f5e6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  curHealth: 0
-  isDead: 0
+  _maxHealth: 1
+  _curHealth: 0
 --- !u!114 &7698214876862720360
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 5267271785600024554, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: _maxHealth
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8243040262208347072, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: sightRadius
       value: 3
@@ -78,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8243040262208347072, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: <CanDetectOnAttack>k__BackingField
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
