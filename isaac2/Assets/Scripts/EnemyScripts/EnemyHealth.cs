@@ -24,6 +24,7 @@ public class EnemyHealth : Health
         // TODO: death animation
         SpawnCorpse();
         Destroy(this.gameObject);  // , delay);  // delay by length of death animation
+        // TODO: death effects / attacks (i.e., explosion, lingering area effect, etc.)
         SpawnLoot();
     }
 
@@ -59,9 +60,7 @@ public class EnemyHealth : Health
         {
             Debug.Log(item);
             // Spawn Items
-            // Could be held by corpse and interacting with corpse puts them in inventory?
-            // Could be scattered randomly within a range around corpse?
-            // Could be immediately placed in Player inventory
+            
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,7 +7,10 @@ using UnityEngine;
 public class EnemyInventory : MonoBehaviour
 {
     /// <summary>
-    ///     Enemy Inventory Class.
+    ///     Handles Enemy Inventory.
+    ///     Stores Inventory as a list of Resources (strings for now).
+    ///     Enemy also has a Loot Table with Resources and drop chances.
+    ///     
     ///     Depending on how Player Inventory is implemented,
     ///     both could inherit from an abstract Inventory class.
     ///     
@@ -14,74 +18,92 @@ public class EnemyInventory : MonoBehaviour
     ///     Just carving out some structure for future implementation so I can
     ///     also think about dropping inventory on death.
     ///     
-    ///     TODO: Replace "string" with item-specific class
+    ///     TODO: Replace "string" with Resource class
     /// </summary>
-    
-    // TODO: implement loot table
-    // Dictionaries don't work with prefabs
-    // Could do something ugly like two Lists
-    // Could create a Loot class with Object + dropChance attributes
 
-    [SerializeField] private List<string> inventory;
+    // Loot table is a List of LootTableEntry objects
+    // LootTableEntry objects contain a Resource and drop chance
+    // This was the only way I could think of to add a 2D data structure
+    // that can be saved in a prefab and manipulated in the Editor
+    // Please let me know if you have a better solution
+    [SerializeField] private List<LootTableEntry> lootTable;
+    [SerializeField] private List<string> inventory;  // replace type with Resource
     
     // Start is called before the first frame update
     void Start()
     {
-        List<Object> inventory = new();
-        // Based on loot table, randomly select inventory
-        // If this is a "Super" Enemy, then also add 75% of Player's last inventory?
+        this.inventory = new();
+        AddToInventory(lootTable);
     }
 
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    
-    //}
-
     /// <summary>
-    ///     Add a given Item to Enemy Inventory.
+    ///     Add a given Resource to Enemy Inventory.
     /// </summary>
-    /// <param name="newItem"></param>
-    public void AddToInventory(string newItem)
+    /// <param name="newResource"></param>
+    public void AddToInventory(string newResource)
     {
-        inventory.Add(newItem);
+        this.inventory.Add(newResource);
     }
 
     /// <summary>
-    ///     Add a given List of Objects to Enemy Inventory.
+    ///     Try to add a given Resource to Enemy Inventory based on a given chance.
     /// </summary>
-    /// <param name="newItems"></param>
-    public void AddToInventory(List<string> newItems)
+    /// <param name="newResource"></param>
+    /// <param name="chance"></param>
+    public void AddToInventory(string newResource, float chance)
     {
-        inventory.AddRange(newItems);
+        float random = UnityEngine.Random.Range(0f, 1f);
+        if (random >= chance)
+        {
+            AddToInventory(newResource);
+        }
     }
 
     /// <summary>
-    ///     Add a given percentage of a given List of Items
-    ///     to the Enemy Inventory.
+    ///     Try to add a given Resource to Enemy Inventory based on a given chance,
+    ///     given as a LootTableEntry object.
+    /// </summary>
+    /// <param name="newLootTableEntry"></param>
+    public void AddToInventory(LootTableEntry newLootTableEntry)
+    {
+        AddToInventory(newLootTableEntry.ThisResource, newLootTableEntry.DropChance);
+    }
+
+    /// <summary>
+    ///     Add a given List of Resources to Enemy Inventory.
+    /// </summary>
+    /// <param name="newResources"></param>
+    public void AddToInventory(List<string> newResources)
+    {
+        this.inventory.AddRange(newResources);
+    }
+
+    /// <summary>
+    ///     Try to add a given List of Resources to Enemy Inventory,
+    ///     based on a given chance applied to all Resources.
     ///     Could be used by "Super" Enemies to add Player resources from last Death.
     /// </summary>
-    /// <param name="newItems"></param>
-    /// <param name="percent"></param>
-    public void AddToInventory(List<string> newItems, float percent)
+    /// <param name="newResources"></param>
+    /// <param name="chance"></param>
+    public void AddToInventory(List<string> newResources, float chance = 0.75f)
     {
-        // Probably very unoptimal time complexity
-        // Currently grabs an exact number of items based on percent
-        // Could also remove an exact number of items based on percent instead
-        // Could also iterate through list, and attempt to choose each item at given % chance
-
-
-        int numKept = (int) (percent * newItems.Count);
-        List<string> selectedNewItems = new();
-        
-        for (int i = 0; i < numKept; i++)
+        foreach (var resource in newResources)
         {
-            int random = UnityEngine.Random.Range(0, newItems.Count);
-            selectedNewItems.Add(newItems[random]);
-            newItems.RemoveAt(random);
+            AddToInventory(resource, chance);
         }
+    }
 
-        inventory.AddRange(selectedNewItems);
+    /// <summary>
+    ///     Try to add a given List of LootTableEntry objects to Enemy Inventory.
+    ///     Takes into account dropChance of each resource.
+    /// </summary>
+    /// <param name="newLootTable"></param>
+    public void AddToInventory(List<LootTableEntry> newLootTable)
+    {
+        foreach (var lootTableEntry in newLootTable)
+        {
+            AddToInventory(lootTableEntry);
+        }
     }
 
     /// <summary>
@@ -90,6 +112,6 @@ public class EnemyInventory : MonoBehaviour
     /// <returns></returns>
     public List<string> GetInventory()
     {
-        return new List<string>(inventory);  // clone list
+        return new List<string>(this.inventory);  // clone list
     }
 }
