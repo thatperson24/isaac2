@@ -53,7 +53,7 @@ public class EnemyInventory : MonoBehaviour
     public void AddToInventory(string newResource, float chance)
     {
         float random = UnityEngine.Random.Range(0f, 1f);
-        if (random >= chance)
+        if (random <= chance)
         {
             AddToInventory(newResource);
         }

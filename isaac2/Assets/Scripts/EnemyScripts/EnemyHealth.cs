@@ -58,9 +58,10 @@ public class EnemyHealth : Health
         List<string> inventory = this.GetComponent<EnemyInventory>().GetInventory();
         foreach (string item in inventory)
         {
-            Debug.Log(item);
-            // Spawn Items
-            
+            GameObject corpse = new(item);
+            corpse.AddComponent<SpriteRenderer>();
+            corpse.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Triangle");
+            corpse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -3);
         }
     }
 }
