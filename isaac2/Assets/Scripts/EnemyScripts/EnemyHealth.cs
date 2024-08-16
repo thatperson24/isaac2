@@ -24,6 +24,7 @@ public class EnemyHealth : Health
         // TODO: death animation
         SpawnCorpse();
         Destroy(this.gameObject);  // , delay);  // delay by length of death animation
+        SpawnLoot();
     }
 
     /// <summary>
@@ -44,5 +45,23 @@ public class EnemyHealth : Health
         // eventually should be a specific dead sprite, maybe correct orientation as well
 
         corpse.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
+    }
+
+    /// <summary>
+    ///     This will eventually handle Enemy dropping loot on Death.
+    ///     Lots of possibilities here, depends on how we handle Items,
+    ///     Enemy Inventory, Player Inventory, etc.
+    /// </summary>
+    private void SpawnLoot()
+    {
+        List<string> inventory = this.GetComponent<EnemyInventory>().GetInventory();
+        foreach (string item in inventory)
+        {
+            Debug.Log(item);
+            // Spawn Items
+            // Could be held by corpse and interacting with corpse puts them in inventory?
+            // Could be scattered randomly within a range around corpse?
+            // Could be immediately placed in Player inventory
+        }
     }
 }
