@@ -21,19 +21,25 @@ public class EnemyInventory : MonoBehaviour
     ///     TODO: Replace "string" with Resource class
     /// </summary>
 
-    // Loot table is a List of LootTableEntry objects
-    // LootTableEntry objects contain a Resource and drop chance
-    // This was the only way I could think of to add a 2D data structure
-    // that can be saved in a prefab and manipulated in the Editor
-    // Please let me know if you have a better solution
-    [SerializeField] private List<LootTableEntry> lootTable;
+    // I would like to replace this with a serializable dictionary
+    // or other data structure that can be manipulated in the editor,
+    // or I guess a loot table
+    [SerializeField] private Dictionary<string, float> lootTable;
     [SerializeField] private List<string> inventory;  // replace type with Resource
     
     // Start is called before the first frame update
     void Start()
     {
         this.inventory = new();
+        TempInitLootTable();
         AddToInventory(lootTable);
+    }
+
+    // either could replace dictionary with a serializable data type
+    // or store loot table as csv/text/etc and read into dictionary?
+    private void TempInitLootTable()
+    {
+        lootTable = new Dictionary<string, float> { {"silver", 1f }, {"gold", 0.5f } };
     }
 
     /// <summary>
@@ -57,16 +63,6 @@ public class EnemyInventory : MonoBehaviour
         {
             AddToInventory(newResource);
         }
-    }
-
-    /// <summary>
-    ///     Try to add a given Resource to Enemy Inventory based on a given chance,
-    ///     given as a LootTableEntry object.
-    /// </summary>
-    /// <param name="newLootTableEntry"></param>
-    public void AddToInventory(LootTableEntry newLootTableEntry)
-    {
-        AddToInventory(newLootTableEntry.ThisResource, newLootTableEntry.DropChance);
     }
 
     /// <summary>
@@ -94,15 +90,15 @@ public class EnemyInventory : MonoBehaviour
     }
 
     /// <summary>
-    ///     Try to add a given List of LootTableEntry objects to Enemy Inventory.
+    ///     Try to add a given Dictionary of Resources to Enemy Inventory.
     ///     Takes into account dropChance of each resource.
     /// </summary>
     /// <param name="newLootTable"></param>
-    public void AddToInventory(List<LootTableEntry> newLootTable)
+    public void AddToInventory(Dictionary<string, float> newLootTable)
     {
         foreach (var lootTableEntry in newLootTable)
         {
-            AddToInventory(lootTableEntry);
+            AddToInventory(lootTableEntry.Key, lootTableEntry.Value);
         }
     }
 
