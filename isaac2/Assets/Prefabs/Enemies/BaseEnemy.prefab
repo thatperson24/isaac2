@@ -176,6 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 1
   _curHealth: 0
+  resourcePrefab: {fileID: 0}
 --- !u!114 &7698214876862720360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,3 +223,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: []
+  resourcePrefab: {fileID: 7756595596145637933, guid: f61f03be116042048a6ea9111d8000c2, type: 3}

@@ -26,6 +26,8 @@ public class EnemyInventory : MonoBehaviour
     // or I guess a loot table
     [SerializeField] private Dictionary<string, float> lootTable;
     [SerializeField] private List<string> inventory;  // replace type with Resource
+
+    [SerializeField] private GameObject resourcePrefab;
     
     // Start is called before the first frame update
     void Start()
@@ -109,5 +111,20 @@ public class EnemyInventory : MonoBehaviour
     public List<string> GetInventory()
     {
         return new List<string>(this.inventory);  // clone list
+    }
+
+    public void SpawnLoot()
+    {
+        foreach (string item in inventory)
+        {
+            Vector3 spawnPosition = new(this.transform.position.x, this.transform.position.y, -3);
+            GameObject resourceGameObject = Instantiate(resourcePrefab, spawnPosition, Quaternion.identity);
+            resourceGameObject.name = item;
+            // Set specific sprite for this resource
+            // resource.GetComponent<SpriteRenderer>().sprite = ;
+            float dropForce = 300f;
+            Vector2 dropDirection = new(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f));
+            resourceGameObject.GetComponent<Rigidbody2D>().AddForce(dropDirection * dropForce, ForceMode2D.Impulse);
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+//using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ public class EnemyHealth : Health
     ///     and (future) loot dropping.
     /// </summary> 
 
+    [SerializeField] private GameObject resourcePrefab;
+
     /// <summary>
     ///     Initiate Enemy death process.
     /// </summary>
@@ -25,7 +28,7 @@ public class EnemyHealth : Health
         SpawnCorpse();
         Destroy(this.gameObject);  // , delay);  // delay by length of death animation
         // TODO: death effects / attacks (i.e., explosion, lingering area effect, etc.)
-        SpawnLoot();
+        this.GetComponent<EnemyInventory>().SpawnLoot();
     }
 
     /// <summary>
@@ -46,22 +49,5 @@ public class EnemyHealth : Health
         // eventually should be a specific dead sprite, maybe correct orientation as well
 
         corpse.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
-    }
-
-    /// <summary>
-    ///     This will eventually handle Enemy dropping loot on Death.
-    ///     Lots of possibilities here, depends on how we handle Items,
-    ///     Enemy Inventory, Player Inventory, etc.
-    /// </summary>
-    private void SpawnLoot()
-    {
-        List<string> inventory = this.GetComponent<EnemyInventory>().GetInventory();
-        foreach (string item in inventory)
-        {
-            GameObject corpse = new(item);
-            corpse.AddComponent<SpriteRenderer>();
-            corpse.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Triangle");
-            corpse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -3);
-        }
     }
 }
