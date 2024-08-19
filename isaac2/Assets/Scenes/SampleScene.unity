@@ -158,6 +158,7 @@ MonoBehaviour:
   camera: {fileID: 519420031}
   cameraSpeed: 100
   transitionSpeed: 12
+  gunPivot: {fileID: 1616327256}
 --- !u!4 &388007872
 Transform:
   m_ObjectHideFlags: 0

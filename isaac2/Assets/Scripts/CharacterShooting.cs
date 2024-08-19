@@ -29,7 +29,6 @@ public class CharacterShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         RotateGun();
         if (!isReloading && canShoot && currentAmmo > 0)
         {
@@ -70,7 +69,6 @@ public class CharacterShooting : MonoBehaviour
     void RotateGun()
     {
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-
         Vector3 distanceVector = mousePos - gunPivot.position;
         float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
         gunPivot.rotation = Quaternion.Lerp(gunPivot.rotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * rotationSpeed);

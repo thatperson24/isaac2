@@ -15,6 +15,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float cameraSpeed;
     [SerializeField] private float transitionSpeed;
 
+    [SerializeField] private Transform gunPivot;
     private bool limitsReady;
     private bool isTransitioning;
     private float[] transitionDir;
@@ -37,27 +38,31 @@ public class CameraMovement : MonoBehaviour
 
             float deltax = 0;
             float deltay = 0;
+
+            Vector3 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 distanceVector = mousePos - gunPivot.position;
+            Debug.Log(distanceVector);
             //Try to recenter camera horizontally when moving away from the wall
-            if (transform.localPosition.x > 0.01f && position.x != leftLimit.position.x + horizontal)
+            /*if (transform.localPosition.x > 0.01f && position.x != leftLimit.position.x + horizontal)
             {
                 deltax = -cameraSpeed * Time.deltaTime * .5f;
             }
             else if (transform.localPosition.x < -0.01f && position.x != rightLimit.position.x - horizontal)
             {
                 deltax = cameraSpeed * Time.deltaTime * .5f;
-            }
-            position.x = Mathf.Clamp(position.x + deltax, leftLimit.position.x + horizontal, rightLimit.position.x - horizontal);
+            }*/
+            position.x = Mathf.Clamp(Mathf.Clamp(position.x + deltax + (distanceVector.x*.001f),transform.parent.position.x - 2f, transform.parent.position.x + 2f), leftLimit.position.x + horizontal, rightLimit.position.x - horizontal);
 
             //Try to recenter camera vertically when moving away from the wall
-            if (transform.localPosition.y > 0.01f && position.y != bottomLimit.position.y + vertical)
+            /*if (transform.localPosition.y > 0.01f && position.y != bottomLimit.position.y + vertical)
             {
                 deltay = -cameraSpeed * Time.deltaTime * .5f;
             }
             else if (transform.localPosition.y < -0.01f && position.y != topLimit.position.y - vertical)
             {
                 deltay = cameraSpeed * Time.deltaTime * .5f;
-            }
-            position.y = Mathf.Clamp(position.y + deltay, bottomLimit.position.y + vertical, topLimit.position.y - vertical);
+            }*/
+            position.y = Mathf.Clamp(Mathf.Clamp(position.y + deltay + (distanceVector.y*.001f), transform.parent.position.y - 2f, transform.parent.position.y + 2f), bottomLimit.position.y + vertical, topLimit.position.y - vertical);
 
             transform.position = position;
         }
