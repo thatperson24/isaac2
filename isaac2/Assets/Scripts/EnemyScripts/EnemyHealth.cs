@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-//using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -16,8 +15,6 @@ public class EnemyHealth : Health
     ///     and (future) loot dropping.
     /// </summary> 
 
-    [SerializeField] private GameObject resourcePrefab;
-
     /// <summary>
     ///     Initiate Enemy death process.
     /// </summary>
@@ -28,7 +25,6 @@ public class EnemyHealth : Health
         // this.GetComponent<EnemyAttack>().DeathAttack();  // Any Attacks/effects on Death
         SpawnCorpse();
         Destroy(this.gameObject);  // , delay);  // Delay by length of Death animation
-        // TODO: Death effects / Attacks (i.e., explosion, lingering area effect, etc.)
         this.GetComponent<EnemyInventory>().SpawnLoot();
     }
 
