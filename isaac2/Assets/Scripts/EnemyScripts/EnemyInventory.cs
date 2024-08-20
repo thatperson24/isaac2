@@ -11,21 +11,21 @@ public class EnemyInventory : MonoBehaviour
     ///     Stores Inventory as a list of Resources (strings for now).
     ///     Enemy also has a Loot Table with Resources and drop chances.
     ///     
-    ///     Depending on how Player Inventory is implemented,
+    ///     Depending on how backend Player Inventory is implemented,
     ///     both could inherit from an abstract Inventory class.
     ///     
-    ///     This is a very unfinished implementation, lots of considerations.
-    ///     Just carving out some structure for future implementation so I can
-    ///     also think about dropping inventory on death.
+    ///     This is an unfinished implementation.
+    ///     Depends on future implementations of Player inventory, Resources,
+    ///     and other related features.
     ///     
-    ///     TODO: Replace "string" with Resource class
+    ///     TODO? RemoveFromInventory?
+    ///     TODO: Add % of Player Inventory to Super Enemy Inventory
+    ///     TODO: Loot drop animations
     /// </summary>
 
     private const int resourceZLayer = -3;
     private const float resourceDropForce = 300f;
 
-    // HELP: These should probably be private right?
-    // But I can't access lootTableEntry fields in EnemyInventory methods?
     [Serializable] private struct LootTableEntry
     {
         [field: SerializeField] public GameObject Resource { get; private set; }
@@ -33,7 +33,18 @@ public class EnemyInventory : MonoBehaviour
         [field: SerializeField] public float[] DropChances { get; private set; }
     }
     [SerializeField] private List<LootTableEntry> lootTable;
-    [SerializeField] private List<GameObject> inventory;
+
+    [Serializable] private class InventoryEntry
+    {
+        [field: SerializeField] public GameObject Resource { get; private set; }
+        [field: SerializeField] public int Count { get; set; }
+        public InventoryEntry(GameObject newResource, int newCount)
+        {
+            this.Resource = newResource;
+            this.Count = newCount;
+        }
+    }
+    [SerializeField] private List<InventoryEntry> inventory;
     
 
     // Start is called before the first frame update
@@ -49,10 +60,33 @@ public class EnemyInventory : MonoBehaviour
     /// <param name="newResource"></param>
     public void AddToInventory(GameObject newResource, int n = 1)
     {
-        for (int i = 0; i < n; i++)
+        if (n <= 0)  // Don't add an entry
         {
-            this.inventory.Add(newResource);
+            return;
         }
+        for (int i = 0; i < this.inventory.Count; i++)
+        {
+            // If Enemy already has >= 1 of this Resource,
+            // update count instead of adding new entry
+            if (newResource.name.Equals(this.inventory[i].Resource.name))
+            {
+                this.inventory[i].Count += n;
+                return;
+            }
+        }
+        // Otherwise, add new entry
+        this.inventory.Add(new InventoryEntry(newResource, n));
+
+    }
+
+    /// <summary>
+    ///     Add a given Resource to Enemy Inventory n times,
+    ///     stored as an InventoryEntry object.
+    /// </summary>
+    /// <param name="newResource"></param>
+    private void AddToInventory(InventoryEntry newResource)
+    {
+        AddToInventory(newResource.Resource, newResource.Count);
     }
 
     /// <summary>
@@ -61,7 +95,7 @@ public class EnemyInventory : MonoBehaviour
     /// </summary>
     /// <param name="newResource"></param>
     /// <param name="dropChances"></param>
-    public void AddToInventory(GameObject newResource, float[] dropChances)
+    public void AddToInventory(GameObject newResource, float[] dropChances, int minN)
     {
         float random = UnityEngine.Random.Range(0f, 1f);
         float chanceSum = 0;
@@ -71,7 +105,7 @@ public class EnemyInventory : MonoBehaviour
             chanceSum += dropChance;
             if (random <= chanceSum)
             {
-                AddToInventory(newResource, i);
+                AddToInventory(newResource, i + minN);
                 return;
             }
         }
@@ -83,7 +117,22 @@ public class EnemyInventory : MonoBehaviour
     /// <param name="newResources"></param>
     public void AddToInventory(List<GameObject> newResources)
     {
-        this.inventory.AddRange(newResources);
+        foreach (GameObject resource in newResources)
+        {
+            AddToInventory(resource);
+        }
+    }
+
+    /// <summary>
+    ///     Add a given List of InventoryEntries to Enemy Inventory.
+    /// </summary>
+    /// <param name="newResources"></param>
+    private void AddToInventory(List<InventoryEntry> newResources)
+    {
+        foreach (InventoryEntry resource in newResources)
+        {
+            AddToInventory(resource);
+        }
     }
 
     /// <summary>
@@ -95,17 +144,27 @@ public class EnemyInventory : MonoBehaviour
     {
         foreach (var lootTableEntry in newLootTable)
         {
-            AddToInventory(lootTableEntry.Resource, lootTableEntry.DropChances);
+            AddToInventory(lootTableEntry.Resource, lootTableEntry.DropChances, lootTableEntry.MinN);
         }
     }
 
     /// <summary>
-    ///     Return cloned List of objects in Enemy Inventory.
+    ///     Return cloned List of Resources in Enemy Inventory.
+    ///     Flattened so that items with multiples appear several times,
+    ///     rather than as a resource : count pair.
     /// </summary>
     /// <returns></returns>
     public List<GameObject> GetInventory()
     {
-        return new List<GameObject>(this.inventory);  // Clone list
+        List<GameObject> flattenedInventory = new();
+        foreach (InventoryEntry entry in this.inventory)
+        {
+            for (int i = 0; i < entry.Count; i++)
+            {
+                flattenedInventory.Add(entry.Resource);
+            }
+        }
+        return flattenedInventory;
     }
 
     /// <summary>
@@ -115,7 +174,7 @@ public class EnemyInventory : MonoBehaviour
     public void SpawnLoot()
     {
         // TODO: Splash animation?
-        foreach (GameObject resourcePrefab in inventory)
+        foreach (GameObject resourcePrefab in this.GetInventory())
         {
             Vector3 spawnPosition = new(this.transform.position.x, this.transform.position.y, resourceZLayer);
             GameObject resourceGameObject = Instantiate(resourcePrefab, spawnPosition, Quaternion.identity);
@@ -147,6 +206,8 @@ public class EnemyInventory : MonoBehaviour
     ///     Try to add a given List of Resources to Enemy Inventory,
     ///     based on a given chance applied to all Resources.
     ///     Could be used by "Super" Enemies to add Player resources from last Death.
+    ///     
+    ///     COMMENTED OUT FOR NOW UNTIL I KNOW MORE ABOUT PLAYER INVENTORY
     /// </summary>
     /// <param name="newResources"></param>
     /// <param name="chance"></param>

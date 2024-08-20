@@ -41,6 +41,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4309827212271764967, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: inventory.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4309827212271764967, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
       propertyPath: lootTable.Array.size
       value: 1
       objectReference: {fileID: 0}
