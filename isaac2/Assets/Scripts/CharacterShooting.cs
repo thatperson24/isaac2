@@ -50,6 +50,7 @@ public class CharacterShooting : MonoBehaviour
         newBullet.transform.Rotate(0, 0, 0);
         float bulletSpeed = newBullet.GetComponent<Bullet>().GetBulletSpeed();
         newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(bulletSpeed * newBullet.transform.right.x, bulletSpeed * newBullet.transform.right.y);
+        this.transform.GetChild(0).GetComponent<CameraMovement>().RecoilCamera();
         canShoot = false;
         currentAmmo--;
         yield return new WaitForSeconds(shootCD);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class CameraMovement : MonoBehaviour
@@ -41,28 +42,9 @@ public class CameraMovement : MonoBehaviour
 
             Vector3 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
             Vector3 distanceVector = mousePos - gunPivot.position;
-            Debug.Log(distanceVector);
-            //Try to recenter camera horizontally when moving away from the wall
-            /*if (transform.localPosition.x > 0.01f && position.x != leftLimit.position.x + horizontal)
-            {
-                deltax = -cameraSpeed * Time.deltaTime * .5f;
-            }
-            else if (transform.localPosition.x < -0.01f && position.x != rightLimit.position.x - horizontal)
-            {
-                deltax = cameraSpeed * Time.deltaTime * .5f;
-            }*/
-            position.x = Mathf.Clamp(Mathf.Clamp(position.x + deltax + (distanceVector.x*.001f),transform.parent.position.x - 2f, transform.parent.position.x + 2f), leftLimit.position.x + horizontal, rightLimit.position.x - horizontal);
 
-            //Try to recenter camera vertically when moving away from the wall
-            /*if (transform.localPosition.y > 0.01f && position.y != bottomLimit.position.y + vertical)
-            {
-                deltay = -cameraSpeed * Time.deltaTime * .5f;
-            }
-            else if (transform.localPosition.y < -0.01f && position.y != topLimit.position.y - vertical)
-            {
-                deltay = cameraSpeed * Time.deltaTime * .5f;
-            }*/
-            position.y = Mathf.Clamp(Mathf.Clamp(position.y + deltay + (distanceVector.y*.001f), transform.parent.position.y - 2f, transform.parent.position.y + 2f), bottomLimit.position.y + vertical, topLimit.position.y - vertical);
+            position.x = Mathf.Clamp(Mathf.Clamp(position.x + deltax + (distanceVector.x * .001f), transform.parent.position.x - 2f, transform.parent.position.x + 2f), leftLimit.position.x + horizontal, rightLimit.position.x - horizontal);
+            position.y = Mathf.Clamp(Mathf.Clamp(position.y + deltay + (distanceVector.y * .001f), transform.parent.position.y - 2f, transform.parent.position.y + 2f), bottomLimit.position.y + vertical, topLimit.position.y - vertical);
 
             transform.position = position;
         }
@@ -109,5 +91,20 @@ public class CameraMovement : MonoBehaviour
     {
         transitionDir[0] = x;
         transitionDir[1] = y;
+    }
+
+    public void RecoilCamera()
+    {
+        float vertical = camera.orthographicSize;
+        float horizontal = vertical * Screen.width / Screen.height;
+        Vector3 position = transform.position;
+
+        Vector3 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 distanceVector = mousePos - gunPivot.position;
+
+        position.x = Mathf.Clamp(Mathf.Clamp(position.x + (-distanceVector.x * .1f), transform.parent.position.x - 2f, transform.parent.position.x + 2f), leftLimit.position.x + horizontal, rightLimit.position.x - horizontal);
+        position.y = Mathf.Clamp(Mathf.Clamp(position.y + (-distanceVector.y * .1f), transform.parent.position.y - 2f, transform.parent.position.y + 2f), bottomLimit.position.y + vertical, topLimit.position.y - vertical);
+
+        transform.position = position;
     }
 }
