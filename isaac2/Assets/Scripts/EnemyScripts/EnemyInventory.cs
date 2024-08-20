@@ -21,49 +21,59 @@ public class EnemyInventory : MonoBehaviour
     ///     TODO: Replace "string" with Resource class
     /// </summary>
 
-    // I would like to replace this with a serializable dictionary
-    // or other data structure that can be manipulated in the editor,
-    // or I guess a loot table
-    [SerializeField] private Dictionary<string, float> lootTable;
-    [SerializeField] private List<string> inventory;  // replace type with Resource
+    private const int resourceZLayer = -3;
+    private const float resourceDropForce = 300f;
 
-    [SerializeField] private GameObject resourcePrefab;
+    // HELP: These should probably be private right?
+    // But I can't access lootTableEntry fields in EnemyInventory methods?
+    [Serializable] private struct LootTableEntry
+    {
+        [field: SerializeField] public GameObject Resource { get; private set; }
+        [field: SerializeField] public int MinN { get; private set; }
+        [field: SerializeField] public float[] DropChances { get; private set; }
+    }
+    [SerializeField] private List<LootTableEntry> lootTable;
+    [SerializeField] private List<GameObject> inventory;
     
+
     // Start is called before the first frame update
     void Start()
     {
         this.inventory = new();
-        TempInitLootTable();
         AddToInventory(lootTable);
     }
 
-    // either could replace dictionary with a serializable data type
-    // or store loot table as csv/text/etc and read into dictionary?
-    private void TempInitLootTable()
+    /// <summary>
+    ///     Add a given Resource to Enemy Inventory n times.
+    /// </summary>
+    /// <param name="newResource"></param>
+    public void AddToInventory(GameObject newResource, int n = 1)
     {
-        lootTable = new Dictionary<string, float> { {"silver", 1f }, {"gold", 0.5f } };
+        for (int i = 0; i < n; i++)
+        {
+            this.inventory.Add(newResource);
+        }
     }
 
     /// <summary>
-    ///     Add a given Resource to Enemy Inventory.
+    ///     Try to add a given Resource to Enemy Inventory based on a given
+    ///     array of chances that n Resources drop.
     /// </summary>
     /// <param name="newResource"></param>
-    public void AddToInventory(string newResource)
-    {
-        this.inventory.Add(newResource);
-    }
-
-    /// <summary>
-    ///     Try to add a given Resource to Enemy Inventory based on a given chance.
-    /// </summary>
-    /// <param name="newResource"></param>
-    /// <param name="chance"></param>
-    public void AddToInventory(string newResource, float chance)
+    /// <param name="dropChances"></param>
+    public void AddToInventory(GameObject newResource, float[] dropChances)
     {
         float random = UnityEngine.Random.Range(0f, 1f);
-        if (random <= chance)
+        float chanceSum = 0;
+        for (int i = 0; i < dropChances.Length; i++)
         {
-            AddToInventory(newResource);
+            float dropChance = dropChances[i];
+            chanceSum += dropChance;
+            if (random <= chanceSum)
+            {
+                AddToInventory(newResource, i);
+                return;
+            }
         }
     }
 
@@ -71,10 +81,67 @@ public class EnemyInventory : MonoBehaviour
     ///     Add a given List of Resources to Enemy Inventory.
     /// </summary>
     /// <param name="newResources"></param>
-    public void AddToInventory(List<string> newResources)
+    public void AddToInventory(List<GameObject> newResources)
     {
         this.inventory.AddRange(newResources);
     }
+
+    /// <summary>
+    ///     Try to add a given List of LootTableEntry structs to Enemy Inventory.
+    ///     Takes into account dropChances of each Resource.
+    /// </summary>
+    /// <param name="newLootTable"></param>
+    private void AddToInventory(List<LootTableEntry> newLootTable)
+    {
+        foreach (var lootTableEntry in newLootTable)
+        {
+            AddToInventory(lootTableEntry.Resource, lootTableEntry.DropChances);
+        }
+    }
+
+    /// <summary>
+    ///     Return cloned List of objects in Enemy Inventory.
+    /// </summary>
+    /// <returns></returns>
+    public List<GameObject> GetInventory()
+    {
+        return new List<GameObject>(this.inventory);  // Clone list
+    }
+
+    /// <summary>
+    ///     Spawn contents of Enemy's inventory as GameObjects.
+    ///     Resources spread randomly around Enemy corpse.
+    /// </summary>
+    public void SpawnLoot()
+    {
+        // TODO: Splash animation?
+        foreach (GameObject resourcePrefab in inventory)
+        {
+            Vector3 spawnPosition = new(this.transform.position.x, this.transform.position.y, resourceZLayer);
+            GameObject resourceGameObject = Instantiate(resourcePrefab, spawnPosition, Quaternion.identity);
+            
+            // Move resource in random direction from Death point with slight force
+            Vector2 dropDirection = new(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f));
+            resourceGameObject.GetComponent<Rigidbody2D>().AddForce(dropDirection * resourceDropForce, ForceMode2D.Impulse);
+        }
+    }
+
+
+
+    /// <summary>
+    ///     Try to add a given Resource to Enemy Inventory based on a given chance
+    ///     that Enemy drops one of those Resources.
+    /// </summary>
+    /// <param name="newResource"></param>
+    /// <param name="dropChance"></param>
+    //private void AddToInventory(GameObject newResource, float dropChance)
+    //{
+    //    float random = UnityEngine.Random.Range(0f, 1f);
+    //    if (random <= dropChance)
+    //    {
+    //        AddToInventory(newResource);
+    //    }
+    //}
 
     /// <summary>
     ///     Try to add a given List of Resources to Enemy Inventory,
@@ -83,48 +150,11 @@ public class EnemyInventory : MonoBehaviour
     /// </summary>
     /// <param name="newResources"></param>
     /// <param name="chance"></param>
-    public void AddToInventory(List<string> newResources, float chance = 0.75f)
-    {
-        foreach (var resource in newResources)
-        {
-            AddToInventory(resource, chance);
-        }
-    }
-
-    /// <summary>
-    ///     Try to add a given Dictionary of Resources to Enemy Inventory.
-    ///     Takes into account dropChance of each resource.
-    /// </summary>
-    /// <param name="newLootTable"></param>
-    public void AddToInventory(Dictionary<string, float> newLootTable)
-    {
-        foreach (var lootTableEntry in newLootTable)
-        {
-            AddToInventory(lootTableEntry.Key, lootTableEntry.Value);
-        }
-    }
-
-    /// <summary>
-    ///     Return cloned List of objects in Enemy inventory.
-    /// </summary>
-    /// <returns></returns>
-    public List<string> GetInventory()
-    {
-        return new List<string>(this.inventory);  // clone list
-    }
-
-    public void SpawnLoot()
-    {
-        foreach (string item in inventory)
-        {
-            Vector3 spawnPosition = new(this.transform.position.x, this.transform.position.y, -3);
-            GameObject resourceGameObject = Instantiate(resourcePrefab, spawnPosition, Quaternion.identity);
-            resourceGameObject.name = item;
-            // Set specific sprite for this resource
-            // resource.GetComponent<SpriteRenderer>().sprite = ;
-            float dropForce = 300f;
-            Vector2 dropDirection = new(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f));
-            resourceGameObject.GetComponent<Rigidbody2D>().AddForce(dropDirection * dropForce, ForceMode2D.Impulse);
-        }
-    }
+    //public void AddToInventory(List<GameObject> newResources, float dropChance = 0.75f)
+    //{
+    //    foreach (GameObject resource in newResources)
+    //    {
+    //        AddToInventory(resource, chance);
+    //    }
+    //}
 }

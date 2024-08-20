@@ -40,6 +40,38 @@ PrefabInstance:
       propertyPath: lootTable.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: c33f07982e25b644f874867345e0dcdb, type: 2}
+    - target: {fileID: 4309827212271764967, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: lootTable.Array.data[0].resource
+      value: 
+      objectReference: {fileID: 7756595596145637933, guid: f61f03be116042048a6ea9111d8000c2, type: 3}
+    - target: {fileID: 4309827212271764967, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChances.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4309827212271764967, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: lootTable.Array.data[0].<Resource>k__BackingField
+      value: 
+      objectReference: {fileID: 7756595596145637933, guid: f61f03be116042048a6ea9111d8000c2, type: 3}
+    - target: {fileID: 4309827212271764967, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChances.Array.data[0]
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4309827212271764967, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChances.Array.data[1]
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4309827212271764967, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: lootTable.Array.data[0].<DropChances>k__BackingField.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4309827212271764967, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: lootTable.Array.data[0].<DropChances>k__BackingField.Array.data[0]
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4309827212271764967, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      propertyPath: lootTable.Array.data[0].<DropChances>k__BackingField.Array.data[1]
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5309532344452685670, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

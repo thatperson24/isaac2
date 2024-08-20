@@ -24,10 +24,11 @@ public class EnemyHealth : Health
     public override void Death()
     {
         this.GetComponent<EnemyPursue>().SetCurSpeed(0);
-        // TODO: death animation
+        // TODO: Death animation
+        // this.GetComponent<EnemyAttack>().DeathAttack();  // Any Attacks/effects on Death
         SpawnCorpse();
-        Destroy(this.gameObject);  // , delay);  // delay by length of death animation
-        // TODO: death effects / attacks (i.e., explosion, lingering area effect, etc.)
+        Destroy(this.gameObject);  // , delay);  // Delay by length of Death animation
+        // TODO: Death effects / Attacks (i.e., explosion, lingering area effect, etc.)
         this.GetComponent<EnemyInventory>().SpawnLoot();
     }
 
@@ -46,7 +47,7 @@ public class EnemyHealth : Health
         GameObject corpse = new(objectName + "Corpse");
         corpse.AddComponent<SpriteRenderer>();
         corpse.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Enemies/" + objectName);
-        // eventually should be a specific dead sprite, maybe correct orientation as well
+        // Eventually should be a specific dead sprite, maybe correct orientation as well
 
         corpse.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
     }
