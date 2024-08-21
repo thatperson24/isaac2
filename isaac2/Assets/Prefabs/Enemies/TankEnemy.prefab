@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: baseSpeed
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1366250605379882559, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366250605379882559, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3189644527222412365, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -53,12 +61,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3761415475160629876, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3dd334f93252fa64aa3ceac442b5e176, type: 3}
+    - target: {fileID: 3761415475160629876, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3761415475160629876, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761415475160629876, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4239387474837639793, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: m_Name
@@ -67,6 +83,14 @@ PrefabInstance:
     - target: {fileID: 5267271785600024554, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: maxHealth
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5267271785600024554, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: _maxHealth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783351529804238540, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: lootTable.Array.data[0].<MinN>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8243040262208347072, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: sightRadius
@@ -78,7 +102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8243040262208347072, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: <CanDetectOnAttack>k__BackingField
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
