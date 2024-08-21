@@ -62,6 +62,9 @@ Enemy Attributes & AI
 		- Explosive bullets, etc.
 	- Effects
 		- Burn/poison/freeze/slow/blind/knockback/etc.
+	- Parry / defend
+		- Certain actions give Enemy extra defense for some time
+	- Knockback?
 - Health
 	- Max health
 		+ Set for enemy type
@@ -71,11 +74,16 @@ Enemy Attributes & AI
 			- Action
 		- Heal allies
 	- Shield/Defense (lots of possibilities, or none at all)
+	- Get knocked back when Attacked?
+	- Slower speed at lower health?
 - Death
-	- Despawn on death
-	- Explode/create effect on death
-	- Remain as corpse entity on death
-		+ Stay on ground forever
+	+ Despawn on Death
+	- Explode/create effect on Death
+	+ Remain as corpse entity on Death
+	+ Drop inventory on Death
+		+ Loot table
+		- Loot drop animation
+	- Death animation
 - Enemy Types
 	- Melee
 		- Mid HP
@@ -84,6 +92,7 @@ Enemy Attributes & AI
 		- High Speed
 		- No follow distance
 		- Mid Damage
+		- ? Drops
 	- Ranged
 		- Low HP
 		- High Vision
@@ -91,6 +100,7 @@ Enemy Attributes & AI
 		- Mid Speed
 		- Mid follow distance
 		- Mid Damage
+		- ? Drops
 	- Tank
 		- High HP
 		- Low Vision
@@ -98,6 +108,7 @@ Enemy Attributes & AI
 		- Low Speed
 		- No follow distance
 		- High Damage
+		- ? Drops
 	- Support
 		- High HP
 		- Mid Vision
@@ -105,7 +116,8 @@ Enemy Attributes & AI
 		- Mid Speed
 		- High follow distance
 		- No/Low Damage
+		- ? Drops
 	- "Super" Enemy
 		- When killed by an Enemy, Super Enemy spawns next run
 		- Upgraded version of previous killer Enemy
-		- Holds 75% of Player's previous held items
+		- Drops 75% of Player's previous held items
