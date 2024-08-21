@@ -578,6 +578,8 @@ MonoBehaviour:
   maxAmmo: 16
   currentAmmo: 0
   reloadTime: 2
+  flCenteringSpeed: 2
+  flRecoilStr: 0.25
 --- !u!61 &893021819
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -770,7 +772,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1837763837}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -816,7 +818,7 @@ MonoBehaviour:
   m_PointLightInnerAngle: 70
   m_PointLightOuterAngle: 70
   m_PointLightInnerRadius: 2
-  m_PointLightOuterRadius: 2.5
+  m_PointLightOuterRadius: 7.366833
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1

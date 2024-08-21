@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
+using UnityEngine.UIElements;
 
 public class CharacterShooting : MonoBehaviour
 {
@@ -18,6 +20,9 @@ public class CharacterShooting : MonoBehaviour
     private bool isReloading;
     private bool canShoot;
 
+    private Vector3 distanceVector;
+    [SerializeField] private float flCenteringSpeed;
+    [SerializeField] private float flRecoilStr;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +35,8 @@ public class CharacterShooting : MonoBehaviour
     void Update()
     {
         RotateGun();
+        float step = flCenteringSpeed * Time.deltaTime;
+        ResetFlashlight(step);
         if (!isReloading && canShoot && currentAmmo > 0)
         {
             if (Input.GetKey(KeyCode.Mouse0))
@@ -50,7 +57,7 @@ public class CharacterShooting : MonoBehaviour
         newBullet.transform.Rotate(0, 0, 0);
         float bulletSpeed = newBullet.GetComponent<Bullet>().GetBulletSpeed();
         newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(bulletSpeed * newBullet.transform.right.x, bulletSpeed * newBullet.transform.right.y);
-        this.transform.GetChild(0).GetComponent<CameraMovement>().RecoilCamera();
+        RecoilFlashlight();
         canShoot = false;
         currentAmmo--;
         yield return new WaitForSeconds(shootCD);
@@ -67,11 +74,28 @@ public class CharacterShooting : MonoBehaviour
         canShoot = true;
     }
 
-    void RotateGun()
+    private void RotateGun()
     {
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 distanceVector = mousePos - gunPivot.position;
+        distanceVector = mousePos - gunPivot.position;
         float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
         gunPivot.rotation = Quaternion.Lerp(gunPivot.rotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * rotationSpeed);
+    }
+
+    private void RecoilFlashlight()
+    {
+        Transform flashlightTransform = this.transform.GetChild(1).transform.GetChild(0);
+        float x = flashlightTransform.localPosition.x;
+
+        flashlightTransform.localPosition = new Vector3(x - flRecoilStr, 0, 0);
+    }
+
+    private void ResetFlashlight(float step)
+    {
+        Vector2 target = new Vector2(1, 0);
+        Transform flashlightTransform = this.transform.GetChild(1).transform.GetChild(0);
+
+        flashlightTransform.localPosition = Vector2.MoveTowards(flashlightTransform.localPosition, target, step);
+
     }
 }

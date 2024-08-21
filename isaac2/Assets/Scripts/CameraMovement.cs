@@ -92,19 +92,4 @@ public class CameraMovement : MonoBehaviour
         transitionDir[0] = x;
         transitionDir[1] = y;
     }
-
-    public void RecoilCamera()
-    {
-        float vertical = camera.orthographicSize;
-        float horizontal = vertical * Screen.width / Screen.height;
-        Vector3 position = transform.position;
-
-        Vector3 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 distanceVector = mousePos - gunPivot.position;
-
-        position.x = Mathf.Clamp(Mathf.Clamp(position.x + (-distanceVector.x * .1f), transform.parent.position.x - 2f, transform.parent.position.x + 2f), leftLimit.position.x + horizontal, rightLimit.position.x - horizontal);
-        position.y = Mathf.Clamp(Mathf.Clamp(position.y + (-distanceVector.y * .1f), transform.parent.position.y - 2f, transform.parent.position.y + 2f), bottomLimit.position.y + vertical, topLimit.position.y - vertical);
-
-        transform.position = position;
-    }
 }
