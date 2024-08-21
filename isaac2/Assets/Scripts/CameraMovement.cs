@@ -15,6 +15,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private Camera camera;
     [SerializeField] private float cameraSpeed;
     [SerializeField] private float transitionSpeed;
+    [SerializeField] private float maxCameraDist;
 
     [SerializeField] private Transform gunPivot;
     private bool limitsReady;
@@ -43,8 +44,8 @@ public class CameraMovement : MonoBehaviour
             Vector3 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
             Vector3 distanceVector = mousePos - gunPivot.position;
 
-            position.x = Mathf.Clamp(Mathf.Clamp(position.x + deltax + (distanceVector.x * .001f), transform.parent.position.x - 2f, transform.parent.position.x + 2f), leftLimit.position.x + horizontal, rightLimit.position.x - horizontal);
-            position.y = Mathf.Clamp(Mathf.Clamp(position.y + deltay + (distanceVector.y * .001f), transform.parent.position.y - 2f, transform.parent.position.y + 2f), bottomLimit.position.y + vertical, topLimit.position.y - vertical);
+            position.x = Mathf.Clamp(Mathf.Clamp(position.x + deltax + (distanceVector.x * cameraSpeed * Time.deltaTime), transform.parent.position.x - maxCameraDist, transform.parent.position.x + maxCameraDist), leftLimit.position.x + horizontal, rightLimit.position.x - horizontal);
+            position.y = Mathf.Clamp(Mathf.Clamp(position.y + deltay + (distanceVector.y * cameraSpeed * Time.deltaTime), transform.parent.position.y - maxCameraDist, transform.parent.position.y + maxCameraDist), bottomLimit.position.y + vertical, topLimit.position.y - vertical);
 
             transform.position = position;
         }

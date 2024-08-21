@@ -156,8 +156,9 @@ MonoBehaviour:
   topLimit: {fileID: 0}
   bottomLimit: {fileID: 0}
   camera: {fileID: 519420031}
-  cameraSpeed: 100
+  cameraSpeed: 1
   transitionSpeed: 12
+  maxCameraDist: 2
   gunPivot: {fileID: 1616327256}
 --- !u!4 &388007872
 Transform:

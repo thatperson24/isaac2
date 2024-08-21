@@ -64,6 +64,10 @@ public class CharacterShooting : MonoBehaviour
         canShoot = true;
     }
 
+    /* Disables shooting for <reloadTime> duration and sets current ammo to max and re-enables shooting after the duration
+     * currentAmmo is reset after the timer to account for animations.
+     * Parameters: N/A
+     */
     IEnumerator Reload()
     {
         isReloading = true;
@@ -82,17 +86,25 @@ public class CharacterShooting : MonoBehaviour
         gunPivot.rotation = Quaternion.Lerp(gunPivot.rotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * rotationSpeed);
     }
 
+    /* Sets the camera back a certain distance depending on recoil strength
+     * Parameters: N/A
+     */
     private void RecoilFlashlight()
     {
-        Transform flashlightTransform = this.transform.GetChild(1).transform.GetChild(0);
+        Transform flashlightTransform = this.transform.GetChild(1).transform.GetChild(0); //Getting flashlight object in heirarchy 
         float x = flashlightTransform.localPosition.x;
 
         flashlightTransform.localPosition = new Vector3(x - flRecoilStr, 0, 0);
     }
 
+
+    /* Continuously tries to move the flashlight back to the starting position
+     * Parameters:
+     *  - step: the speed of the flashlight
+     */
     private void ResetFlashlight(float step)
     {
-        Vector2 target = new Vector2(1, 0);
+        Vector2 target = new Vector2(1, 0); //original flashlight position
         Transform flashlightTransform = this.transform.GetChild(1).transform.GetChild(0);
 
         flashlightTransform.localPosition = Vector2.MoveTowards(flashlightTransform.localPosition, target, step);
