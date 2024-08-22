@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class CameraMovement : MonoBehaviour
@@ -14,7 +15,9 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private Camera camera;
     [SerializeField] private float cameraSpeed;
     [SerializeField] private float transitionSpeed;
+    [SerializeField] private float maxCameraDist;
 
+    [SerializeField] private Transform gunPivot;
     private bool limitsReady;
     private bool isTransitioning;
     private float[] transitionDir;
@@ -37,27 +40,12 @@ public class CameraMovement : MonoBehaviour
 
             float deltax = 0;
             float deltay = 0;
-            //Try to recenter camera horizontally when moving away from the wall
-            if (transform.localPosition.x > 0.01f && position.x != leftLimit.position.x + horizontal)
-            {
-                deltax = -cameraSpeed * Time.deltaTime * .5f;
-            }
-            else if (transform.localPosition.x < -0.01f && position.x != rightLimit.position.x - horizontal)
-            {
-                deltax = cameraSpeed * Time.deltaTime * .5f;
-            }
-            position.x = Mathf.Clamp(position.x + deltax, leftLimit.position.x + horizontal, rightLimit.position.x - horizontal);
 
-            //Try to recenter camera vertically when moving away from the wall
-            if (transform.localPosition.y > 0.01f && position.y != bottomLimit.position.y + vertical)
-            {
-                deltay = -cameraSpeed * Time.deltaTime * .5f;
-            }
-            else if (transform.localPosition.y < -0.01f && position.y != topLimit.position.y - vertical)
-            {
-                deltay = cameraSpeed * Time.deltaTime * .5f;
-            }
-            position.y = Mathf.Clamp(position.y + deltay, bottomLimit.position.y + vertical, topLimit.position.y - vertical);
+            Vector3 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 distanceVector = mousePos - gunPivot.position;
+
+            position.x = Mathf.Clamp(Mathf.Clamp(position.x + deltax + (distanceVector.x * cameraSpeed * Time.deltaTime), transform.parent.position.x - maxCameraDist, transform.parent.position.x + maxCameraDist), leftLimit.position.x + horizontal, rightLimit.position.x - horizontal);
+            position.y = Mathf.Clamp(Mathf.Clamp(position.y + deltay + (distanceVector.y * cameraSpeed * Time.deltaTime), transform.parent.position.y - maxCameraDist, transform.parent.position.y + maxCameraDist), bottomLimit.position.y + vertical, topLimit.position.y - vertical);
 
             transform.position = position;
         }
