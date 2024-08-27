@@ -99,6 +99,8 @@ public class FloorManager : MonoBehaviour
             {
                 rooms[i].GetComponent<Room>().CloseRooms();                
             }
+            GameObject.Find("Character").GetComponent<CharacterMovement>().SetCurrentRoom(rooms[0]);
+            GameObject.Find("CameraHolder").GetComponent<CameraMovement>().SetLimitsReady(true);
         }
     }
 

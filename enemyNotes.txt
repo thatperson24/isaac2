@@ -1,56 +1,51 @@
 Enemy Attributes & AI
 - Spawn
 	- On room generation
-		- Random # and placement
-		- Set # and random placement
-		- Set # and placement
+		- Pseudo random spawn points generated on room generation 
+			- Point system: enemy/group has "cost" and room gets random budget in range
 	- On entering room
-		- Random # and placement
-		- Set # and random placement
-		- Set # and placement
-	- Random chance/location per x time
-		- Never stops
-		- Stops after goal reached
-		- Stops after set time/#
+		- Spawn from those set points on entering
+			- All at once? Or staggered?
 - Idle
-	- Never idle
-	- Sitting still
-		- Facing specific direction / FOV
-		- 360 "vision"
+	+ Sitting still
+		- Facing specific direction
 	- Patrolling/pacing
-		- Random wandering
-		- Set paths
-			- Specific to room type
-			- Randomly set on spawn
-- Alertness
-	- Detect player/begin attacking
-		- When Player is x distance away
-		- When Player attacks
-			- Enemy is passive only until attacked
-			- Enemy can't see Player, Player attacks, enemy is alert
-			- Enemy can't see Player, Player attacks, enemy is confused & ignores
-		- When Player enters Enemy field of vision
-		- When Player shines light at Enemy
-		- When Player interacts with an object/makes noise
-		- When Player enters room
-		- Enemy is always alert
-	- Forget player/stop attacking
-		- When Player gets x distance away
-		- When x amount of time passes
-		- When Player leaves Enemy FOV
-		- When Player takes specific action to hide
-		- When Player leaves room
-		- Enemy never forgets after detecting Player
-- Pursue Player
-	- Stay in place, never pursue
-	- Pursue when alert
-	- Following distance
-		- Always try to touch Player
-		- Keep a set distance away (ranged attacks, etc.)
+		- Generated paths
+- Player Detection/Activate Alert State
+	- Enemy Sight
+		+ When Player enters Enemy field of vision
+		+ When Player-spawned Bullet enters Enemy field of vision
+		+ Blind Enemies
+		- When Player flashlight cast enters Enemy field of vision
+		- When other Alert Enemy enters field of vision
+	- Enemy Hearing
+		+ When Player enters range (temporary)
+		+ Deaf Enemies
+		- When Player shoots within range
+		- When Player moves noisily within range
+		- When Player interacts with an object within range
+		- When other Enemy attacks Player within range
+	+ Enemy Touch
+		+ When Player touches Enemy
+		+ When Player hits Enemy with bullet
+			+ "Dumb" Enemy may not be able to tell where Player is based on this alone
+	+ Enemy never forgets after detecting Player
+- In Alert State
+	- Melee Enemy
+		+ Always try to touch Player
+		- Perhaps flee on low health
+	- Ranged Enemy
+		+ Keep a set distance away (min/max)
+	- Support Enemy
+		- Move towards low health Enemies?
+		- Flee from Player?
+		+ Pursue + keep wide distance from Player?
 	- Pathing
 		- Elements of randomness
 		- Avoid obstacles & dangers
+			- Some Enemies may be dumb
 		- Avoid walls & navigate corners
+		- Look into different pathfinding in Unity
 - Attack
 	- Melee
 		- Damage player on contact (basic)
@@ -67,22 +62,62 @@ Enemy Attributes & AI
 		- Explosive bullets, etc.
 	- Effects
 		- Burn/poison/freeze/slow/blind/knockback/etc.
-- Flee
-	- Enemies could flee under certain conditions
+	- Parry / defend
+		- Certain actions give Enemy extra defense for some time
+	- Knockback?
 - Health
 	- Max health
-		- Set for enemy type
+		+ Set for enemy type
 		- Random within range
 	- Heal
-		- Self-heal
+		- Self-heal?
 			- Action
-			- Over time
 		- Heal allies
-	- Shield (lots of possibilities, or none at all)
+	- Shield/Defense (lots of possibilities, or none at all)
+	- Get knocked back when Attacked?
+	- Slower speed at lower health?
 - Death
-	- Despawn on death
-	- Explode/create effect on death
-	- Remain as corpse entity on death
-		- Despawn after set time
-		- Despawn after leaving room
-		- Stay on ground forever
+	+ Despawn on Death
+	- Explode/create effect on Death
+	+ Remain as corpse entity on Death
+	+ Drop inventory on Death
+		+ Loot table
+		- Loot drop animation
+	- Death animation
+- Enemy Types
+	- Melee
+		- Mid HP
+		- Mid Vision
+		- Mid Hearing
+		- High Speed
+		- No follow distance
+		- Mid Damage
+		- ? Drops
+	- Ranged
+		- Low HP
+		- High Vision
+		- High Hearing
+		- Mid Speed
+		- Mid follow distance
+		- Mid Damage
+		- ? Drops
+	- Tank
+		- High HP
+		- Low Vision
+		- Low Hearing
+		- Low Speed
+		- No follow distance
+		- High Damage
+		- ? Drops
+	- Support
+		- High HP
+		- Mid Vision
+		- Mid Hearing
+		- Mid Speed
+		- High follow distance
+		- No/Low Damage
+		- ? Drops
+	- "Super" Enemy
+		- When killed by an Enemy, Super Enemy spawns next run
+		- Upgraded version of previous killer Enemy
+		- Drops 75% of Player's previous held items
