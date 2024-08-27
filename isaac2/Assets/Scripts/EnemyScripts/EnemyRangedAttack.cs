@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyIdle : MonoBehaviour
+public class EnemyRangedAttack : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,9 +13,6 @@ public class EnemyIdle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!this.GetComponent<EnemyDetectPlayer>().IsAlert)
-        {
-            // Idle behaviors
-        }
+        
     }
 }
