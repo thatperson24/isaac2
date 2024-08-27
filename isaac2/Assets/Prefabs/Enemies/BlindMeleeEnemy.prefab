@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3875785695207072013, guid: 09a302158451b36489973be9f793f251, type: 3}
+      propertyPath: attackCooldown
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1366250605379882559, guid: 09a302158451b36489973be9f793f251, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 1

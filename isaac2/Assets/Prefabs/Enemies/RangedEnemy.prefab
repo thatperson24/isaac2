@@ -147,5 +147,27 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6861672975685441882, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3433786351952857964}
   m_SourcePrefab: {fileID: 100100000, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+--- !u!1 &8912759765049919429 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6861672975685441882, guid: eab6755ac63f17c4384d2e46ec23d298, type: 3}
+  m_PrefabInstance: {fileID: 2632904836123795103}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3433786351952857964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8912759765049919429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74611727ff0bb8e47a0aadb7d1f0175a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAttackDistance: 4
+  attackCooldown: 1
